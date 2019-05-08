@@ -156,6 +156,24 @@
     <Compile Include="..\..\..\JCR6\jcr6.cs">
       <Link>dep\JCR6\jcr6.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\TrickyUnits\Dirry.cs">
+      <Link>dep\Units\Dirry.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\TrickyUnits\FileList.cs">
+      <Link>dep\Units\FileList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\TrickyUnits\GINI Is Not Ini.cs">
+      <Link>dep\Units\GINI Is Not Ini.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\TrickyUnits\mkl.cs">
+      <Link>dep\Units\mkl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\TrickyUnits\qstr.cs">
+      <Link>dep\Units\qstr.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\TrickyUnits\qstream.cs">
+      <Link>dep\Units\qstream.cs</Link>
+    </Compile>
     <Compile Include="..\..\Libraries\BubbleBankClass.cs">
       <Link>dep\Bubble\Class\BubbleBankClass.cs</Link>
     </Compile>
@@ -237,9 +255,7 @@
     </None>
     <None Include="app.manifest" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="dep\Units\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
