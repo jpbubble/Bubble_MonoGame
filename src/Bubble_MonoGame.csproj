@@ -42,6 +42,15 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\Libraries\BubbleBankClass.cs">
+      <Link>dep\Bubble\Class\BubbleBankClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Libraries\BubbleJCRClass.cs">
+      <Link>dep\Bubble\Class\BubbleJCRClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Libraries\BubbleMainClass.cs">
+      <Link>dep\Bubble\Class\BubbleMainClass.cs</Link>
+    </Compile>
     <Compile Include="Bubble_MonoGame_Init.cs" />
     <Compile Include="Start.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
