@@ -24,7 +24,7 @@
 // Version: 19.05.08
 // EndLic
 
-ï»¿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 

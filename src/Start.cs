@@ -24,7 +24,7 @@
 // Version: 19.05.08
 // EndLic
 
-ï»¿using System;
+using System;
 
 namespace Bubble
 {
