@@ -35,7 +35,7 @@ namespace Bubble {
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main() {
+        static void Main() {            
             using (var game = new Bubble_MonoGame_Init())
                 game.Run();
         }

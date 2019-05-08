@@ -50,6 +50,11 @@ namespace Bubble {
         protected override void Initialize() {
             // TODO: Add your initialization logic here
 
+            // Bubble
+            // TODO: Link the error handler!
+            SBubble.Init("MonoGame");
+
+
             base.Initialize();
         }
 
