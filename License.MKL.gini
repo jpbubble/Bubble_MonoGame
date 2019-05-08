@@ -1,0 +1,20 @@
+[rem]
+Generated file!
+
+Generated: 5/8/2019 11:48:49 PM
+
+[vars]
+PROJECT=Bubble for MonoGame (OpenGL)
+
+
+[List:KNOWN]
+
+[List:SKIPFILE]
+License.MKL.gini
+src/Game1.cs
+src/Program.cs
+
+[List:SKIPDIR]
+src\obj\Debug
+src\Properties
+

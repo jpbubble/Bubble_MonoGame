@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Bubble_MonoGame
+namespace Bubble
 {
     /// <summary>
     /// The main class.
     /// </summary>
-    public static class Program
+    public static class Program_Start
     {
         /// <summary>
         /// The main entry point for the application.
@@ -13,7 +13,7 @@ namespace Bubble_MonoGame
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
+            using (var game = new Bubble_MonoGame_Init())
                 game.Run();
         }
     }
