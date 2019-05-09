@@ -45,6 +45,20 @@ namespace Bubble {
     static class FlowManager {
 
         static Dictionary<string, HardFlowClass> HardFlow = new Dictionary<string, HardFlowClass>();
+        static HardFlowClass HFC = null;
+
+        static void GoHardFlow(HardFlowClass Flow) {
+            HFC = Flow;
+        }
+
+        static void GoHardFlow(string Flow) {
+            if (HardFlow.ContainsKey(Flow))
+                HFC = HardFlow[Flow];
+            else
+                HFC = null;
+        }
+
+        
 
     }
 }
