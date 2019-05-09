@@ -189,6 +189,7 @@
       <Link>dep\Bubble\Class\BubbleMainClass.cs</Link>
     </Compile>
     <Compile Include="Bubble_MonoGame_Init.cs" />
+    <Compile Include="Flow\AlgemeneFlowManager.cs" />
     <Compile Include="Start.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -269,8 +270,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dep\Embed\Death.png" />
+    <EmbeddedResource Include="dep\Embed\Death.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <Import Project="..\packages\KeraLua.1.0.11\build\net45\KeraLua.targets" Condition="Exists('..\packages\KeraLua.1.0.11\build\net45\KeraLua.targets')" />
