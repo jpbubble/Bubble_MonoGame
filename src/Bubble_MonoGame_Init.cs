@@ -24,6 +24,7 @@
 // Version: 19.05.09
 // EndLic
 
+
 using UseJCR6;
 using TrickyUnits;
 using Microsoft.Xna.Framework;
@@ -121,5 +122,6 @@ namespace Bubble {
         }
     }
 }
+
 
 
