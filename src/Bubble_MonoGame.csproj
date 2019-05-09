@@ -265,6 +265,7 @@
       <Link>dep\JCR6\Drivers\Compression\zlib\readme.md</Link>
     </None>
     <None Include="app.manifest" />
+    <None Include="dep\Embed" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
