@@ -63,8 +63,7 @@ namespace Bubble {
             this.Window.Title = SBubble.Title;
 
 
-            // TQMG
-            TQMG.Init(graphics, GraphicsDevice, spriteBatch, SBubble.JCR);
+
 
             base.Initialize();
         }
@@ -76,8 +75,12 @@ namespace Bubble {
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            // TQMG
+            TQMG.Init(graphics, GraphicsDevice, spriteBatch, SBubble.JCR);
 
-            // TODO: use this.Content to load your game content here
+            // Error Test
+            Error.GoError("Test", "TestError", "Traceme");
+
         }
 
         /// <summary>
@@ -107,9 +110,12 @@ namespace Bubble {
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
-            GraphicsDevice.Clear(Color.Blue);
+            GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Begin();
 
-            // TODO: Add your drawing code here
+            FlowManager.Draw(gameTime);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

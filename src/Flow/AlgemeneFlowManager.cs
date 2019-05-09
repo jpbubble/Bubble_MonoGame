@@ -47,15 +47,19 @@ namespace Bubble {
         static Dictionary<string, HardFlowClass> HardFlow = new Dictionary<string, HardFlowClass>();
         static HardFlowClass HFC = null;
 
-        static void GoHardFlow(HardFlowClass Flow) {
+        static public void GoHardFlow(HardFlowClass Flow) {
             HFC = Flow;
         }
 
-        static void GoHardFlow(string Flow) {
+        static public void GoHardFlow(string Flow) {
             if (HardFlow.ContainsKey(Flow))
                 HFC = HardFlow[Flow];
             else
                 HFC = null;
+        }
+
+        static public void Draw(GameTime gt) {
+            if (HFC != null) HFC.Draw(gt);
         }
 
         
