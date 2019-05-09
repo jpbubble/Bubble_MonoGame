@@ -24,7 +24,8 @@
 // Version: 19.05.09
 // EndLic
 
-
+using UseJCR6;
+using TrickyUnits;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -51,10 +52,19 @@ namespace Bubble {
         protected override void Initialize() {
             // TODO: Add your initialization logic here
 
+            // JCR6
+            JCR6_lzma.Init();
+            JCR6_zlib.Init();
+            JCR6_jxsrcca.Init();
+
             // Bubble
             // TODO: Link the error handler!
-            SBubble.Init("MonoGame");
+            SBubble.Init("MONOGAME");
+            this.Window.Title = SBubble.Title;
 
+
+            // TQMG
+            TQMG.Init(graphics, GraphicsDevice, spriteBatch, SBubble.JCR);
 
             base.Initialize();
         }

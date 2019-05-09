@@ -190,6 +190,7 @@
     </Compile>
     <Compile Include="Bubble_MonoGame_Init.cs" />
     <Compile Include="Flow\AlgemeneFlowManager.cs" />
+    <Compile Include="Flow\Error.cs" />
     <Compile Include="Start.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

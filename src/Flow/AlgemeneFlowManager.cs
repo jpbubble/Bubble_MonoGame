@@ -29,14 +29,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 
 
 namespace Bubble {
 
     abstract class HardFlowClass {
-        abstract public void Draw();
-        abstract public void Update();
+        abstract public void Draw(GameTime gameTime);
+        abstract public void Update(GameTime gameTime);
     }
 
 
