@@ -39,6 +39,7 @@ namespace Bubble {
         static void Main() {            
             using (var game = new Bubble_MonoGame_Init())
                 game.Run();
+            
         }
     }
 }

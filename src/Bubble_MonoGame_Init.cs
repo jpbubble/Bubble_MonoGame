@@ -60,7 +60,7 @@ namespace Bubble {
 
             // Bubble
             // TODO: Link the error handler!
-            SBubble.Init("MONOGAME");
+            SBubble.Init("MONOGAME",Error.GoError);
             this.Window.Title = SBubble.Title;
 
 
@@ -78,9 +78,12 @@ namespace Bubble {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TQMG
             TQMG.Init(graphics, GraphicsDevice, spriteBatch, SBubble.JCR);
+            // Start init script
+            FlowManager.StartInitFlow();
+
 
             // Error Test
-            Error.GoError("Test", "TestError", "Traceme");
+            //Error.GoError("Test", "TestError", "Traceme");
 
         }
 
@@ -116,13 +119,14 @@ namespace Bubble {
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.Black);
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, null, null);
 
             FlowManager.Draw(gameTime);
 
             spriteBatch.End();
 
             base.Draw(gameTime);
+            
         }
     }
 }

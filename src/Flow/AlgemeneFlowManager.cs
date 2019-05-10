@@ -32,6 +32,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using TrickyUnits;
+using UseJCR6;
+using NLua;
 
 
 
@@ -42,11 +45,15 @@ namespace Bubble {
         abstract public void Update(GameTime gameTime);
     }
 
+    abstract class SoftFlowClass {
+        Lua State;
 
+    }
 
     static class FlowManager {
 
         static Dictionary<string, HardFlowClass> HardFlow = new Dictionary<string, HardFlowClass>();
+        static Dictionary<string, SoftFlowClass> SoftFlow = new Dictionary<string, SoftFlowClass>();
         static HardFlowClass HFC = null;
         static public bool TimeToDie = false;
         static public KeyboardState KB;
@@ -77,7 +84,23 @@ namespace Bubble {
             if (HFC != null) HFC.Update(gt);
         }
 
-        
+        static public void StartInitFlow() {
+            BubConsole.CSay("Looking for Init script!");
+            var mainfile = "";
+            foreach (string e in SBubble.ResFiles) {
+                var ce = e.ToUpper();
+                if (ce == "INIT.LUA" || qstr.Suffixed(ce, "/INIT.LUA") || ce=="INIT.NIL" || qstr.Suffixed(ce, "/INIT.NIL"))
+                    mainfile = e;
+            }
+            if (mainfile == "")
+                Error.GoError("Startup error", "INIT.LUA or INIT.NIL required somewhere in any folder.", "None have been found");
+            else
+                GoHardFlow(BubConsole.Flow);
+        }
+
+        static public void NewSoftFlow(string tag,string scriptfile) {
+            BubConsole.CSay($"Starting new state {tag} with script {scriptfile}");
+        }
 
     }
 }
