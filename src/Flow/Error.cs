@@ -36,13 +36,17 @@ namespace Bubble {
     class Error:HardFlowClass {
 
         static TQMGImage Death = null;
+        static string sct, smsg, strace;
 
         static public void GoError(string ct, string message, string trace) {
             var s = QuickStream.OpenEmbedded("Death.png");
             if (s == null) Debug.WriteLine("ERROR! Trying to read Death resulted into null!");
             s.Position = 0;
             Death = TQMG.GetImage(s);
-            FlowManager.GoHardFlow(new Error());
+            sct = ct;
+            smsg = message;
+            strace = trace;
+            FlowManager.GoHardFlow(new Error());            
         }
 
         private Error() { }
@@ -52,6 +56,18 @@ namespace Bubble {
             TQMG.DrawRectangle(0, 0, TQMG.ScrWidth, TQMG.ScrHeight);
             TQMG.Color(0, 36, 50);
             Death.Draw(0, 0);
+            TQMG.Color(255, 180, 100);
+            SysFont.DrawText("OOPS!", 50, 0);
+            TQMG.Color(255, 255, 0);
+            SysFont.DrawText("You tried something we didn't think of!", 50, 25);
+            TQMG.Color(0, 180, 255);
+            SysFont.DrawText(sct, 50, 75);
+            TQMG.Color(0, 200, 255);
+            SysFont.DrawText(smsg, 50, 125);
+            TQMG.Color(0, 220, 255);
+            SysFont.DrawText(strace, 50, 175);
+
+
         }
 
         public override void Update(GameTime gameTime) {
