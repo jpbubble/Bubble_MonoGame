@@ -29,7 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using TrickyUnits;
@@ -45,15 +45,12 @@ namespace Bubble {
         abstract public void Update(GameTime gameTime);
     }
 
-    abstract class SoftFlowClass {
-        Lua State;
-
-    }
+    
 
     static class FlowManager {
 
         static Dictionary<string, HardFlowClass> HardFlow = new Dictionary<string, HardFlowClass>();
-        static Dictionary<string, SoftFlowClass> SoftFlow = new Dictionary<string, SoftFlowClass>();
+        //static Dictionary<string, SoftFlowClass> SoftFlow = new Dictionary<string, SoftFlowClass>();
         static HardFlowClass HFC = null;
         static public bool TimeToDie = false;
         static public KeyboardState KB;
@@ -94,8 +91,18 @@ namespace Bubble {
             }
             if (mainfile == "")
                 Error.GoError("Startup error", "INIT.LUA or INIT.NIL required somewhere in any folder.", "None have been found");
-            else
+            else {
+                //mainfile = "Script/Viezelul.lua";
                 GoHardFlow(BubConsole.Flow);
+                try {
+                    BubConsole.WriteLine($"Loading Init Script: {mainfile}");
+                    SBubble.NewState("$INIT", mainfile);
+                    //SBubble.State("$INIT").state.DoString("local fc = ''\nfor k,v in pairs(_G) do\n fc=fc .. type(v) .. ' ' ..k..'\\n'\n end\n error(fc)"); // debug line
+                    SBubble.State("$INIT").state.DoString("assert(type(Bubble_Init)=='function','Function expected for Bubble_Init, got '..type(Bubble_Init))\nBubble_Init()");
+                } catch (Exception e) {
+                    Error.GoError("Init Error", e.Message,"");
+                }
+            }
         }
 
         static public void NewSoftFlow(string tag,string scriptfile) {

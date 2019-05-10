@@ -78,6 +78,10 @@ namespace Bubble {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TQMG
             TQMG.Init(graphics, GraphicsDevice, spriteBatch, SBubble.JCR);
+
+            // Make sure all states consider at least these!
+            SBubble.AddInit(BubbleConsole.StateInit);
+
             // Start init script
             FlowManager.StartInitFlow();
 

@@ -37,8 +37,11 @@ namespace Bubble {
 
         static TQMGImage Death = null;
         static string sct, smsg, strace;
+        static bool crashed = false;
 
         static public void GoError(string ct, string message, string trace) {
+            Debug.WriteLine($"{ct}: {message}");
+            if (crashed) return; crashed = true;
             var s = QuickStream.OpenEmbedded("Death.png");
             if (s == null) Debug.WriteLine("ERROR! Trying to read Death resulted into null!");
             s.Position = 0;
