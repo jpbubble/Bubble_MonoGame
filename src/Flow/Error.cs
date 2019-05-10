@@ -66,12 +66,14 @@ namespace Bubble {
             SysFont.DrawText(smsg, 50, 125);
             TQMG.Color(0, 220, 255);
             SysFont.DrawText(strace, 50, 175);
-
+            TQMG.Color(0, 255, 255);
+            SysFont.DrawText("Hit Escape to exit this application",50,TQMG.ScrHeight-30);
 
         }
 
         public override void Update(GameTime gameTime) {
-            throw new NotImplementedException();
+            //Debug.WriteLine("Hello? Anybody home?");
+            if (FlowManager.KB.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape)) FlowManager.TimeToDie = true;
         }
     }
 }

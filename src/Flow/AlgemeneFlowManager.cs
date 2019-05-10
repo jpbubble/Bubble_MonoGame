@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 
 
@@ -47,6 +48,12 @@ namespace Bubble {
 
         static Dictionary<string, HardFlowClass> HardFlow = new Dictionary<string, HardFlowClass>();
         static HardFlowClass HFC = null;
+        static public bool TimeToDie = false;
+        static public KeyboardState KB;
+        static public MouseState MS;
+         
+
+        static public TimeSpan Time { get; private set; }
 
         static public void GoHardFlow(HardFlowClass Flow) {
             HFC = Flow;
@@ -61,6 +68,13 @@ namespace Bubble {
 
         static public void Draw(GameTime gt) {
             if (HFC != null) HFC.Draw(gt);
+        }
+
+        static public void Update(GameTime gt) {
+            Time = gt.ElapsedGameTime;
+            MS = Mouse.GetState();
+            KB = Keyboard.GetState();
+            if (HFC != null) HFC.Update(gt);
         }
 
         
