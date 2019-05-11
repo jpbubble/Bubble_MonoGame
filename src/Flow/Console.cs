@@ -24,10 +24,9 @@
 // Version: 19.05.11
 // EndLic
 
-ï»¿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using TrickyUnits;
@@ -112,7 +111,21 @@ namespace Bubble {
         }
 
         public override void Update(GameTime gameTime) {
-            
+            // Please note, these routines do not scan anything. They only return the value the last TQMG.Start() request done in the main routine scanned for.
+            var b = TQMGKey.GetChar();
+            var k = TQMGKey.GetKey();
+            switch (k) {
+                case Keys.Back:
+                    if (TypingCommand != "") TypingCommand = qstr.Left(TypingCommand, TypingCommand.Length - 1);
+                    break;
+                default: {
+                        int tw = 0, th = 0;
+                        SysFont.TextSizes($"{TypingCommand}__", ref tw, ref th);
+                        if (b >= 32 && b <= 126 && tw < TQMG.ScrWidth - 25)
+                            TypingCommand += b;
+                        break;
+                    }
+            }
         }
 
     }
