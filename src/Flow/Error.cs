@@ -55,20 +55,21 @@ namespace Bubble {
         private Error() { }
 
         public override void Draw(GameTime gameTime) {
+            const int ident = 5;
             TQMG.Color(0, 18, 25);
             TQMG.DrawRectangle(0, 0, TQMG.ScrWidth, TQMG.ScrHeight);
             TQMG.Color(0, 36, 50);
             Death.Draw(0, 0);
             TQMG.Color(255, 180, 100);
-            SysFont.DrawText("OOPS!", 50, 0);
+            SysFont.DrawText("OOPS!", ident, 0);
             TQMG.Color(255, 255, 0);
             SysFont.DrawText("You tried something we didn't think of!", 50, 25);
             TQMG.Color(0, 180, 255);
-            SysFont.DrawText(sct, 50, 75);
+            SysFont.DrawText(sct, ident, 75);
             TQMG.Color(0, 200, 255);
-            SysFont.DrawText(smsg, 50, 125);
+            SysFont.DrawText(smsg, ident, 125);
             TQMG.Color(0, 220, 255);
-            SysFont.DrawText(strace, 50, 175);
+            SysFont.DrawText(strace, ident, 175);
             TQMG.Color(0, 255, 255);
             SysFont.DrawText("Hit Escape to exit this application",50,TQMG.ScrHeight-30);
 

@@ -8,7 +8,7 @@ namespace Bubble {
             api = new BubbleConsole();
             var s = SBubble.State(vm).state;
             s["Bubble_Console_Console"] = api;
-            /*
+            //*
             SBubble.DoNIL(vm, @"
 
             #accept Bubble_Console_Console
@@ -34,6 +34,7 @@ namespace Bubble {
 
             ", "Console initizer");
             // */
+            /*
             SBubble.State(vm).DoString(@" -- Translation by NIL... Absolutely ludicrous I must do it this way, but since no errors are properly thrown, I don't have a choice!
 
 -- comment:  whiteline
@@ -54,6 +55,7 @@ end
 function CSay(msg) assert(type(msg)=='string','NR: Function did not receive the parameters the way it wanted!')
 Bubble_Console_Console:CSay ( msg )
 end");
+//*/
 
         }
 

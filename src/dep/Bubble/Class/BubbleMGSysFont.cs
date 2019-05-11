@@ -17,14 +17,17 @@ namespace Bubble {
                 var b = (byte)text[i];
                 if (b == 32)
                     dx += fw;
-                else if (b>32 && b < 127) {
+                else if (b == 10) {
+                    dx = x;
+                    dy += fh;
+                } else if (b > 32 && b < 127) {
                     if (!CharPics.ContainsKey(b)) {
                         var q = QuickStream.OpenEmbedded($"SysFont.{b}.png");
                         if (q != null) {
                             CharPics[b] = TQMG.GetImage(q);
                             Debug.WriteLine($"Loaded character {b} => {text[i]}");
                         }
-                    } 
+                    }
                     if (CharPics.ContainsKey(b)) { // NO ELSE! That won't cause the desired effect
                         try {
                             var cp = CharPics[b];
