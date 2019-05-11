@@ -1,0 +1,108 @@
+// Graphics.nil - Copyright Jeroen P. Broks
+// This file is part of the Bubble Project, and on its own it has been
+// licensed under the GPL 3
+// Exception to the GPL is made once Bubble reads your script and links
+// this script (or rather the Lua translation of it) into your script,
+// the "viral" effect or "strong copyleft" effect will be lifted.
+// In other words, you do NOT have to make the programs you make in Bubble_Graphics 
+// to be in the GPL.
+
+
+// The class in which most important stuff happens!
+
+// Keep the API out of the regular script! Only these functions and classes may access it :P
+var Bubble_Graphics
+Bubble_Graphics=BubbleGraphics
+BubbleGraphics=nil // waarom is "nil" niet vertaald?
+
+class TImage
+
+	private string bubbletag
+	private bool autorelease
+    
+    
+	void CONSTRUCTOR(string how, string what)
+		print("CONSTRUCTOR")
+		switch how
+			case "*OBTAIN"
+				self.bubbletag=what
+				self.autorelease=false
+			case "*LOAD"
+				self.bubbletag = Bubble_Graphics:Load(what)
+				self.autorelease=true
+			default
+				error("Unknown image creation instruction")
+		end
+		print("END CONS")
+	end
+	
+	void DESTRUCTOR()
+		if self.autorelease then Bubble_Graphics:Free(self.bubbletag) end
+	end
+	
+	get string Tag
+		assert(not self.autorelease,"Cannot obtain the tag from autorelease images")
+		return self.bubbletag
+	end
+	
+	get bool AutoRelease
+		return self.autorelease
+	end
+	
+	get int Width
+		return Bubble_Graphics:Width(self.bubbletag)
+	end
+	
+	get int Height
+		return Bubble_Graphics:Height(self.bubbletag)
+	end
+	
+	void HotCenter()
+		Bubble_Graphics:HotCenter(self.bubbletag)
+	end
+	
+	void HotTopCenter()
+		Bubble_Graphics:HotTopCenter(self.bubbletag)
+	end
+	
+	void HotBottomCenter()
+		Bubble_Graphics:HotBottomCenter(self.bubbletag)
+	end
+	
+	void Draw(int x,int y,frame)
+	     Bubble_Graphics:Draw(self.bubbletag,x,y,frame or 0)
+	end
+	
+	static var Load(string file)
+		return TImage.NEW("*LOAD",file)
+	end
+	
+	static var Obtain(string tag)
+		return TImage.NEW("*OBTAIN",tag)
+	end
+
+end
+
+
+// declaring variables of class-types, is not fully working right. With "var" anything is accepted, so that's why that type is used.
+global var LoadImage(string file,assign)
+	if not assign then
+		return TImage.Load(file)
+	else
+		assert(type(assign)=="string","Image tag must be strings. A "..type(assign).." is not valid!")
+		Bubble_Graphics:Load(file,assign)
+		return TImage.Obtain(assign)
+	end
+end
+
+global var LoadIfNew(string file,string assign)
+	if not Bubble_Graphics:HasTag(assign) then return LoadImage(file,assign) end
+	return TImage.Obtain(assign)
+end
+
+global void FreeImage(string tag)
+	Bubble_Graphics:Free(tag)
+end
+
+CSay("Graphics module loaded")
+
