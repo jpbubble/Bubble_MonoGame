@@ -286,6 +286,7 @@
       <Link>dep\JCR6\Drivers\Compression\zlib\readme.md</Link>
     </None>
     <None Include="app.manifest" />
+    <EmbeddedResource Include="dep\Bubble\NIL\Graphics.nil" />
     <None Include="dep\Embed\Death.md" />
     <None Include="packages.config" />
   </ItemGroup>
