@@ -24,7 +24,6 @@
 // Version: 19.05.11
 // EndLic
 
-ï»¿
 namespace Bubble {
     class BubbleConsole {
 
