@@ -54,6 +54,7 @@ namespace Bubble {
         readonly static public BubConsole Flow = new BubConsole();
         static int ScrollUp=0;
         static string TypingCommand = "";
+        static HardFlowClass returnto = null;
         int LinesOnScreen => TQMG.ScrHeight / 22;
         int StartY {
             get {
@@ -77,6 +78,8 @@ namespace Bubble {
         }
 
         static public void CSay(string msg) => WriteLine(msg, CSayR, CSayG, CSayB);
+
+        static public void CError(string msg) => WriteLine($"?{msg}", 255, 0, 0);
 
         static BubConsole() {
             WriteLine($"Bubble {MKL.Newest} - (c) Jeroen P. Broks", 255, 255, 0);
@@ -175,6 +178,10 @@ namespace Bubble {
                         Exe(c);
                     }
 
+                    break;
+                case Keys.Escape:
+                    if (returnto == null)
+                        CError("No flow to return to!");
                     break;
                 default: {
                         int tw = 0, th = 0;
