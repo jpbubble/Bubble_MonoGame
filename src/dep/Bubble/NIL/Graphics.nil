@@ -1,0 +1,38 @@
+class TImage
+
+	private string bubbletag
+	private bool autorelease
+    
+    
+	void CONSTRUCTOR(string how, string what)
+		switch how
+			case "*OBTAIN"
+				self.bubbletag=what
+				self.autorelease=false
+			case "*LOAD"
+				bubbletag = Bubble_Graphics:Load(what)
+				self.autorelease=true
+		end
+	end
+	
+	static var Load(string file)
+		return TImage.NEW("*LOAD",file)
+	end
+	
+	static var Obtain(string tag)
+		return TImage.NEW("*OBTAIN",tag)
+	end
+
+end
+
+
+
+var LoadImage(string file,assign)
+	if not assign then
+		return TImage.Load(file)
+	else
+		assert(type(assign)=="string","Image tag must be strings. A "..type(assign).." is not valid!")
+		Bubble_Graphics:Load(file,assign)
+		return TImage.Obtain(assign)
+	end
+end
