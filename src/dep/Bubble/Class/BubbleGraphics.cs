@@ -49,12 +49,22 @@ namespace Bubble {
             SBubble.DoNIL(id, script,"Graphics init script");
         }
 
-        public string Load(string file,string assign = "") {
+        public string Load(string file, string assign = "") {
             var tag = assign;
             var at = 0;
             if (tag == "") do { at++; tag = $"IMAGE:{at}"; } while (Images.ContainsKey(tag));
+            if (qstr.Suffixed(file.ToLower(), ".jpbf"))
+                Images[tag] = TQMG.GetBundle(file);
+            else
+                Images[tag] = TQMG.GetImage(file);
             return tag;
         }
+
+        public void HotCenter(string tag) => Images[tag].HotCenter();
+        public void HotTopCenter(string tag) => Images[tag].HotTopCenter();
+        public void HotBottomCenter(string tag) => Images[tag].HotBottomCenter();
+        public int Height(string tag) => Images[tag].Height;
+        public int Width(string tag) => Images[tag].Width;
 
         public bool HasTag(string tag) => Images.ContainsKey(tag);
 

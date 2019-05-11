@@ -47,6 +47,26 @@ class TImage
 		return self.autorelease
 	end
 	
+	get int Width
+		return Bubble_Init:Width(self.bubbletag)
+	end
+	
+	get int Height
+		return Bubble_Init:Height(self.bubbletag)
+	end
+	
+	void HotCenter()
+		Bubble_Init:HotCenter(self.bubbletag)
+	end
+	
+	void HotTopCenter()
+		Bubble_Init:HotTopCenter(self.bubbletag)
+	end
+	
+	void HotBottomCenter()
+		Bubble_Init:HotBottomCenter(self.bubbletag)
+	end
+	
 	void Draw(int x,int y,frame)
 	     Bubble_Graphics:Draw(self.bubbletag,x,y,frame or 0)
 	end
