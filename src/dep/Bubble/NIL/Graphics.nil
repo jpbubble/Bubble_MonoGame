@@ -4,8 +4,8 @@
 // Exception to the GPL is made once Bubble reads your script and links
 // this script (or rather the Lua translation of it) into your script,
 // the "viral" effect or "strong copyleft" effect will be lifted.
-// In other words, you do NOT have to make the programs you make in Bubble_Init 
-// to be in the GPL.
+// In other words, you do NOT have to make the programs you make in Bubble
+// to be in the GPL, because of this file.
 
 
 // The class in which most important stuff happens!
