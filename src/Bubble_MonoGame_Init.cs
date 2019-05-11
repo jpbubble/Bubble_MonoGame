@@ -26,6 +26,7 @@
 
 
 
+
 using UseJCR6;
 using TrickyUnits;
 using Microsoft.Xna.Framework;
@@ -82,6 +83,7 @@ namespace Bubble {
 
             // Make sure all states consider at least these!
             SBubble.AddInit(BubbleConsole.StateInit);
+            SBubble.AddInit(BubbleGraphics.InitGraphics);                
 
             // Start init script
             FlowManager.StartInitFlow();
@@ -136,6 +138,7 @@ namespace Bubble {
         }
     }
 }
+
 
 
 

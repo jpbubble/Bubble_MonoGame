@@ -206,6 +206,7 @@
     </Compile>
     <Compile Include="Bubble_MonoGame_Init.cs" />
     <Compile Include="dep\Bubble\Class\BubbleConsole.cs" />
+    <Compile Include="dep\Bubble\Class\BubbleGraphics.cs" />
     <Compile Include="dep\Bubble\Class\BubbleMGSysFont.cs" />
     <Compile Include="Flow\AlgemeneFlowManager.cs" />
     <Compile Include="Flow\Console.cs" />

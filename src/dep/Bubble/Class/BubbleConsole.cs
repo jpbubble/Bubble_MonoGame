@@ -24,6 +24,7 @@
 // Version: 19.05.11
 // EndLic
 
+
 namespace Bubble {
     class BubbleConsole {
 
@@ -96,4 +97,5 @@ end");
 
 
 }
+
 

@@ -24,6 +24,7 @@
 // Version: 19.05.11
 // EndLic
 
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -130,4 +131,5 @@ namespace Bubble {
         public void DrawText(string t, int x, int y) => SysFont.DrawText(t, x, y);
     }
 }
+
 
