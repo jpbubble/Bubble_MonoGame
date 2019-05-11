@@ -25,7 +25,9 @@
 // EndLic
 
 
+
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
@@ -93,6 +95,53 @@ namespace Bubble {
         }
 
 
+        void Exe(string rawcmd) {
+            rawcmd = rawcmd.Trim();
+            if (rawcmd == "") return;
+            string[] chopped;
+            {
+                var chop = new List<string>();
+                var str = false;
+                var s = "";
+                for (int i = 0; i < rawcmd.Length;i++) {
+                    switch (rawcmd[i]) {
+                        case '"': str = !str; break;
+                        case ' ':
+                            if (str) goto default; // diryt way to fallthrough, but it's the only thing C# supports!
+                            chop.Add(s);
+                            s = "";
+                            break;
+                        default:
+                            s += rawcmd[i];
+                            break;
+                    }
+                }
+                chop.Add(s);
+                chopped = chop.ToArray();
+            }
+            string cmd = chopped[0].ToUpper();
+            string[] arg = new string[0];
+            if (chopped.Length > 1) arg = chopped.Skip(1).Take(chopped.Length - 1).ToArray();
+            switch (cmd) {
+                case "FUCK":
+                case "PISS":
+                case "SHIT":
+                    WriteLine("?Did you mother never tell you not to say such words?",255,0,0);
+                    break;
+                case "BYE":
+                case "EXIT":
+                case "QUIT":
+                    FlowManager.TimeToDie = true;
+                    break;
+                case "SAY":
+                    foreach (string a in arg) CSay(a);
+                    break;
+                default:
+                    WriteLine("?Not understood",255,0,0);
+                    break;
+            }
+        }
+
         public override void Draw(GameTime gameTime) {
             TQMG.Color(255, 255, 255);
             if (BackGround != null) TQMG.Tile(BackGround, 0, 0, 0, 0, TQMG.ScrWidth, TQMG.ScrHeight);
@@ -119,6 +168,14 @@ namespace Bubble {
                 case Keys.Back:
                     if (TypingCommand != "") TypingCommand = qstr.Left(TypingCommand, TypingCommand.Length - 1);
                     break;
+                case Keys.Enter: {
+                        WriteLine($">{TypingCommand}", 255, 180, 0);
+                        var c = TypingCommand;
+                        TypingCommand = "";
+                        Exe(c);
+                    }
+
+                    break;
                 default: {
                         int tw = 0, th = 0;
                         SysFont.TextSizes($"{TypingCommand}__", ref tw, ref th);
@@ -131,5 +188,6 @@ namespace Bubble {
 
     }
 }
+
 
 
