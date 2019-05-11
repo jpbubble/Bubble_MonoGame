@@ -4,7 +4,7 @@
 // Exception to the GPL is made once Bubble reads your script and links
 // this script (or rather the Lua translation of it) into your script,
 // the "viral" effect or "strong copyleft" effect will be lifted.
-// In other words, you do NOT have to make the programs you make in Bubble_Init 
+// In other words, you do NOT have to make the programs you make in Bubble_Graphics 
 // to be in the GPL.
 
 
@@ -13,7 +13,7 @@
 // Keep the API out of the regular script! Only these functions and classes may access it :P
 var Bubble_Graphics
 Bubble_Graphics=BubbleGraphics
-BubbleGraphics=nil
+BubbleGraphics=nil // waarom is "nil" niet vertaald?
 
 class TImage
 
@@ -22,6 +22,7 @@ class TImage
     
     
 	void CONSTRUCTOR(string how, string what)
+		print("CONSTRUCTOR")
 		switch how
 			case "*OBTAIN"
 				self.bubbletag=what
@@ -32,10 +33,11 @@ class TImage
 			default
 				error("Unknown image creation instruction")
 		end
+		print("END CONS")
 	end
 	
 	void DESTRUCTOR()
-	   if self.autorelease then Bubble_Graphics:Free(self.bubbletag) end
+		if self.autorelease then Bubble_Graphics:Free(self.bubbletag) end
 	end
 	
 	get string Tag
@@ -48,23 +50,23 @@ class TImage
 	end
 	
 	get int Width
-		return Bubble_Init:Width(self.bubbletag)
+		return Bubble_Graphics:Width(self.bubbletag)
 	end
 	
 	get int Height
-		return Bubble_Init:Height(self.bubbletag)
+		return Bubble_Graphics:Height(self.bubbletag)
 	end
 	
 	void HotCenter()
-		Bubble_Init:HotCenter(self.bubbletag)
+		Bubble_Graphics:HotCenter(self.bubbletag)
 	end
 	
 	void HotTopCenter()
-		Bubble_Init:HotTopCenter(self.bubbletag)
+		Bubble_Graphics:HotTopCenter(self.bubbletag)
 	end
 	
 	void HotBottomCenter()
-		Bubble_Init:HotBottomCenter(self.bubbletag)
+		Bubble_Graphics:HotBottomCenter(self.bubbletag)
 	end
 	
 	void Draw(int x,int y,frame)
@@ -101,3 +103,8 @@ end
 global void FreeImage(string tag)
 	Bubble_Graphics:Free(tag)
 end
+
+CSay("Graphics module loaded")
+
+
+
