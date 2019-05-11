@@ -24,7 +24,7 @@
 // Version: 19.05.11
 // EndLic
 
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -72,6 +72,58 @@ namespace Bubble {
                 }
             }
         }
+
+        delegate void updatetype();
+        static public void TextSizes(string text, ref int w, ref int h, int x=0) {
+            var dx = x;
+            var dy = 0;
+            // Needed due to C#'s primitive nature!
+            var tw = w;
+            var th = h;
+            void update() {
+                if (dx > tw) tw = dx;
+                if (dy > th) th = dy+fh;
+            }           
+            for (int i = 0; i < text.Length; i++) {
+                var b = (byte)text[i];
+                if (b == 32) {
+                    dx += fw;
+                    update();
+                } else if (b == 10) {
+                    dx = x;
+                    dy += fh;
+                    update();
+                } else if (b > 32 && b < 127) {
+                    if (!CharPics.ContainsKey(b)) {
+                        var q = QuickStream.OpenEmbedded($"SysFont.{b}.png");
+                        if (q != null) {
+                            CharPics[b] = TQMG.GetImage(q);
+                            Debug.WriteLine($"Loaded character {b} => {text[i]}");
+                        }
+                    }
+                    if (CharPics.ContainsKey(b)) { // NO ELSE! That won't cause the desired effect
+                        try {
+                            var cp = CharPics[b];
+                            if (fw < cp.Width) fw = cp.Width;
+                            if (fh < cp.Height) fh = cp.Height;
+                            dx += fw;
+                            update();
+                            if (dx + fw > TQMG.ScrWidth) {
+                                dx = x;
+                                dy += fh;
+                                update();
+                            }
+                        } catch (Exception E) {
+                            Debug.Print($"Caught: {E.Message}");
+                        }
+                    }
+                }
+            }
+            w = tw;
+            h = th;
+        }
+
+
     }
 
     class LuaSysFont {
