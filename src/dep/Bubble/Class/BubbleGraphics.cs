@@ -48,6 +48,7 @@ namespace Bubble {
             bt.Close();
             state["BubbleGraphics"] = this;
             SBubble.DoNIL(id, script,"Graphics init script");
+            SBubble.State(id).DoString("Color = SetColor", "HACKING!"); // Prevent confusion since the console's not really accesible anyway
         }
 
         public string Load(string file, string assign = "") {
@@ -61,6 +62,10 @@ namespace Bubble {
             return tag;
         }
 
+        public int ScrWidth => TQMG.ScrWidth;
+        public int ScrHeight => TQMG.ScrHeight;
+       
+
         public void HotCenter(string tag) => Images[tag].HotCenter();
         public void HotTopCenter(string tag) => Images[tag].HotTopCenter();
         public void HotBottomCenter(string tag) => Images[tag].HotBottomCenter();
@@ -70,7 +75,12 @@ namespace Bubble {
         public bool HasTag(string tag) => Images.ContainsKey(tag);
 
         public void Draw(string tag,int x, int y, int frame) {
-            if (Images.ContainsKey(tag)) SBubble.MyError("Bubble Graphics Error", $"There is no image tagged'{tag}'", SBubble.TraceLua(tag));
+            if (!Images.ContainsKey(tag)) SBubble.MyError("Bubble Graphics Error", $"There is no image tagged'{tag}'", SBubble.TraceLua(FlowManager.CurrentFlow));
+            Images[tag].Draw(x, y, frame);
+        }
+
+        public void Color(byte r,byte g, byte b) {
+            TQMG.Color(r, g, b);
         }
 
         public void Free(string tag) {

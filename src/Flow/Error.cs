@@ -39,9 +39,12 @@ namespace Bubble {
         static TQMGImage Death = null;
         static string sct, smsg, strace;
         static bool crashed = false;
+        static public bool blocked { get; private set; } = false;
 
         static public void GoError(string ct, string message, string trace) {
-            Debug.WriteLine($"{ct}: {message}");
+            blocked = true;
+            BubConsole.WriteLine($"ERROR>{message}", 255, 0, 0);
+            Debug.WriteLine($"{ct}: {message}\nTraceback:\n{trace}\n\n");
             if (crashed) return; crashed = true;
             var s = QuickStream.OpenEmbedded("Death.png");
             if (s == null) Debug.WriteLine("ERROR! Trying to read Death resulted into null!");
@@ -50,7 +53,7 @@ namespace Bubble {
             sct = ct;
             smsg = message;
             strace = trace;
-            FlowManager.GoHardFlow(new Error());            
+            FlowManager.GoHardFlow(new Error(),true);            
         }
 
         private Error() { }
@@ -78,7 +81,12 @@ namespace Bubble {
 
         public override void Update(GameTime gameTime) {
             //Debug.WriteLine("Hello? Anybody home?");
+            /*
             if (FlowManager.KB.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape)) FlowManager.TimeToDie = true;
+            if (FlowManager.KB.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.F1)) BubConsole.GoConsole();
+            */
+            if (TQMGKey.Hit(Microsoft.Xna.Framework.Input.Keys.Escape)) FlowManager.TimeToDie = true;
+            if (TQMGKey.Hit(Microsoft.Xna.Framework.Input.Keys.F1)) BubConsole.GoConsole();
         }
     }
 }

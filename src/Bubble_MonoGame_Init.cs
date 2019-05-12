@@ -82,8 +82,10 @@ namespace Bubble {
             TQMG.Init(graphics, GraphicsDevice, spriteBatch, SBubble.JCR);
 
             // Make sure all states consider at least these!
+            SBubble.AddInit(delegate (string v) { SBubble.State(v).DoString($"function {FlowManager.NOTHING}() end", "Alright move along, nothing to see here!"); });
             SBubble.AddInit(BubbleConsole.StateInit);
-            SBubble.AddInit(BubbleGraphics.InitGraphics);                
+            SBubble.AddInit(BubbleGraphics.InitGraphics);
+            SBubble.AddInit(APIFlow.Init);
 
             // Start init script
             FlowManager.StartInitFlow();

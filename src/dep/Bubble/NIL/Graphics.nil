@@ -13,7 +13,7 @@
 // Keep the API out of the regular script! Only these functions and classes may access it :P
 var Bubble_Graphics
 Bubble_Graphics=BubbleGraphics
-BubbleGraphics=nil // waarom is "nil" niet vertaald?
+//BubbleGraphics=nil // waarom is "nil" niet vertaald?
 
 class TImage
 
@@ -83,6 +83,18 @@ class TImage
 
 end
 
+class TScreen
+	get int Width
+		return Bubble_Graphics.ScrWidth
+	end
+
+	get int Height
+		return Bubble_Graphics.ScrHeight
+	end
+end
+global var Screen 
+Screen = TScreen.NEW()
+
 
 // declaring variables of class-types, is not fully working right. With "var" anything is accepted, so that's why that type is used.
 global var LoadImage(string file,assign)
@@ -102,6 +114,10 @@ end
 
 global void FreeImage(string tag)
 	Bubble_Graphics:Free(tag)
+end
+
+global void SetColor(int r, int g, int b)
+	Bubble_Graphics:Color(r,g,b);
 end
 
 CSay("Graphics module loaded")

@@ -64,6 +64,11 @@ namespace Bubble {
             }
         }
 
+        static public void GoConsole() {
+            returnto = FlowManager.HFC;
+            FlowManager.HFC = Flow;
+        }
+
         static public void WriteLine(string msg, byte r = 255, byte g = 255, byte b = 255) {
             foreach (string txt in msg.Split('\n')){
                 var line = new BCLine();
@@ -182,6 +187,8 @@ namespace Bubble {
                 case Keys.Escape:
                     if (returnto == null)
                         CError("No flow to return to!");
+                    else
+                        FlowManager.HFC = returnto;                    
                     break;
                 default: {
                         int tw = 0, th = 0;

@@ -47,21 +47,85 @@ namespace Bubble {
     }
 
     
+    class APIFlow {
+
+        public readonly string State;
+        
+
+        private APIFlow(string state) {
+            State = state;
+            var s = SBubble.State(state).state;
+            s["Bubble_Flow"] = this;
+            SBubble.State(state).DoString(QuickStream.StringFromEmbed("Flow.lua"), "Flow Management");
+        }
+
+        public void GoToFlow(string flow) {
+            flow = flow.ToUpper();
+            if (!qstr.Prefixed(flow, "FLOW_")) flow = $"FLOW_{flow}";
+            if (!SBubble.HaveState(flow))
+                SBubble.MyError("Flow Management Error", $"GoToFlow: Flow {flow} doesn't exist!", SBubble.TraceLua(State));
+            else {
+                FlowManager.CurrentFlow = flow;
+                BubConsole.WriteLine($"Flow set to: {flow}");
+            }
+        }
+
+        public void LoadFlow(string flow,string file) {
+            flow = flow.ToUpper();
+            if (!qstr.Prefixed(flow, "FLOW_")) flow = $"FLOW_{flow}";
+            SBubble.NewState(flow, file);
+            BubConsole.WriteLine($"Created new flow: {flow}");
+        }
+
+        public void KillFlow(string flow) {
+            flow = flow.ToUpper();
+            if (!qstr.Prefixed(flow, "FLOW_")) flow = $"FLOW_{flow}";
+            if (SBubble.HaveState(flow))
+                SBubble.MyError("Flow Management Error", $"KillFlow: Flow {flow} doesn't exist!", SBubble.TraceLua(State));
+            SBubble.KillState(flow);
+        }
+
+        public void StartFlow() {
+            if (FlowManager.CurrentFlow == "") throw new Exception("Before you can start the flow sequence\nA flow must be loaded and activated");
+            switch (SBubble.RunMode) {
+                case "CB":
+                    FlowManager.GoHardFlow(FlowCallBack.me);
+                    break;
+                case "RF":
+                    FlowManager.GoHardFlow(FlowRepeat.me);
+                    break;
+                default:
+                    throw new Exception($"Unknown runmode ({SBubble.RunMode})");
+            }
+        }
+
+        static public void Init(string state) {
+            new APIFlow(state);
+        }
+        
+    }
+
+    
 
     static class FlowManager {
 
+        public const string NOTHING = "BUB_NOTHING_AT_ALL_THIS_MAY_BE_A_STUPID_NAME_BUT_I_NEEDED_TO_MAKE_SURE_THIS_LINE_WAS_NOT_USED_FOR_ANYTHING_ELSE_CAPICHE";
+
         static Dictionary<string, HardFlowClass> HardFlow = new Dictionary<string, HardFlowClass>();
         //static Dictionary<string, SoftFlowClass> SoftFlow = new Dictionary<string, SoftFlowClass>();
-        static HardFlowClass HFC = null;
+        static public HardFlowClass HFC = null;
         static public bool TimeToDie = false;
         static public KeyboardState KB;
         static public MouseState MS;
+        static public string CurrentFlow = ""; // for soft flow!
+
          
 
         static public TimeSpan Time { get; private set; }
 
-        static public void GoHardFlow(HardFlowClass Flow) {
-            HFC = Flow;
+        static public void GoHardFlow(HardFlowClass Flow,bool force=false) {
+            if ((!Error.blocked) || force)
+                HFC = Flow;
         }
 
         static public void GoHardFlow(string Flow) {
@@ -107,7 +171,24 @@ namespace Bubble {
         }
 
         static public void NewSoftFlow(string tag,string scriptfile) {
-            BubConsole.CSay($"Starting new state {tag} with script {scriptfile}");
+            //BubConsole.CSay($"Starting new state {tag} with script {scriptfile}");
+            tag = tag.ToUpper();
+            if (!qstr.Prefixed(tag, "FLOW_")) tag = $"FLOW_{tag}";
+            SBubble.NewState(tag, scriptfile);
+            try {
+                SBubble.State(tag).DoString($"(BUB_Load or {NOTHING})()", "LOAD");
+            } catch (Exception NotAnExceptionJustAnErrorBozos) {
+                SBubble.MyError("Load Error", NotAnExceptionJustAnErrorBozos.Message, "");
+            }
+        }
+
+        static public void KillSoftFlow(string tag) {
+            tag = tag.ToUpper();
+            if (!qstr.Prefixed(tag, "FLOW_")) tag = $"FLOW_{tag}";
+            if (SBubble.HaveState(tag))
+                SBubble.MyError($"KillFlow(\"{tag}\"):", "Tag non-existent", "");
+            else
+                SBubble.KillState(tag);
         }
 
     }
