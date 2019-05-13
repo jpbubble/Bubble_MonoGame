@@ -208,6 +208,7 @@
     <Compile Include="dep\Bubble\Class\BubbleConsole.cs" />
     <Compile Include="dep\Bubble\Class\BubbleGraphics.cs" />
     <Compile Include="dep\Bubble\Class\BubbleMGSysFont.cs" />
+    <Compile Include="dep\Bubble\Class\Bubble_Audio.cs" />
     <Compile Include="Flow\FlowCallBack.cs" />
     <Compile Include="Flow\AlgemeneFlowManager.cs" />
     <Compile Include="Flow\Console.cs" />
@@ -291,6 +292,7 @@
     <None Include="app.manifest" />
     <EmbeddedResource Include="dep\Bubble\NIL\Graphics.nil" />
     <EmbeddedResource Include="dep\Bubble\NIL\Flow.lua" />
+    <EmbeddedResource Include="dep\Bubble\NIL\Audio.nil" />
     <None Include="dep\Embed\Death.md" />
     <None Include="packages.config" />
   </ItemGroup>
