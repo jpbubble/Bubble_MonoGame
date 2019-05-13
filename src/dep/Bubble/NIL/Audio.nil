@@ -1,0 +1,57 @@
+class TAudioInstance
+	private string buftag
+	
+	void CONSTRUCTOR(string audio,bool loop)
+		self.buftag = Bubble_Audio:IPlay(audio,loop)
+	end
+	
+	void DESTRUCTOR()
+		Bubble_Audio:FreeInstance(self.buftag)
+	end
+	
+end
+
+class TAudio
+	private bool dbg=true;
+
+	private bool autodel
+	private string buftag
+	
+	void CONSTRUCTOR(string file,buftag)
+		self.buftag = Bubble_Audio:Load(file,buftag or "")
+		self.autodel = buftag==nil;
+		print("NIL: "..file.." stored in "..self.buftag)
+	end
+	
+	void DESTRUCTOR()
+		if self.autodel 
+			Bubble_Audio:Free(self.buftag) 
+			if self.dbg then print("Audio buffer "..self.buftag.." released") end
+		end
+	end
+		
+	
+	void Play()
+		Bubble_Audio:Play(self.buftag)
+	end
+	
+	var IPlay()
+		return TAudioInstance.NEW(self.buftag,false)
+	end
+	
+	var Loop()
+		return TAudioInstance.NEW(self.buftag,true)
+	end
+
+end
+
+global var LoadAudio(string file,buftag)
+	return TAudio.NEW(file,buftag)
+end
+global var LoadSound
+LoadSound=LoadAudio
+
+global void FreeAudio(string buffer)
+	Bubble_Audio:Free(buffer)
+end
+
