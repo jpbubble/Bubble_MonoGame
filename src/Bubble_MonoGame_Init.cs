@@ -88,6 +88,7 @@ namespace Bubble {
             SBubble.AddInit(BubbleGraphics.InitGraphics);
             SBubble.AddInit(Bubble_Audio.Init);
             SBubble.AddInit(APIFlow.Init);
+            SBubble.AddInit(BubbleSuperGlobal.Init);
 
             // Start init script
             FlowManager.StartInitFlow();

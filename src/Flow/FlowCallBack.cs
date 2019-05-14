@@ -24,7 +24,7 @@
 // Version: 19.05.14
 // EndLic
 
-ï»¿#undef CallBackTrack
+#undef CallBackTrack
 
 using System;
 using System.Collections.Generic;

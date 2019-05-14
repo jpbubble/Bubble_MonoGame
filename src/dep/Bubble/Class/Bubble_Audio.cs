@@ -24,7 +24,7 @@
 // Version: 19.05.14
 // EndLic
 
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -32,6 +32,7 @@ using TrickyUnits;
 
 using Microsoft.Xna.Framework.Audio;
 //using Microsoft.Xna.Framework.Media; // As XNA only supports the use of external players requiring "real files" this road is for now not discussable.
+//Even more because it's very well possible, future editions of Bubble may even not be using XNA.
 
 namespace Bubble {
 
