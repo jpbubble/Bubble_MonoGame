@@ -199,6 +199,9 @@ namespace Bubble {
                         break;
                     }
             }
+            // Scroll
+            if (TQMGKey.Held(Keys.Down) && ScrollUp > 0) ScrollUp -= 2;
+            if (TQMGKey.Held(Keys.Up) && ScrollUp < StartY) ScrollUp += 2;
         }
 
     }
