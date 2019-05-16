@@ -117,12 +117,14 @@ namespace Bubble {
             var at = 0;
             if (tag == "") do { at++; tag = $"FONT:{at}"; } while (Fonts.ContainsKey(tag));
             var font = TQMG.GetFont(FontBundle);
-            Fonts[tag] = font ?? throw new Exception($"Filed loading {FontBundle} at {tag}\n{UseJCR6.JCR6.JERROR}");
+            Fonts[tag] = font ?? throw new Exception($"Failed loading {FontBundle} at {tag}\n{UseJCR6.JCR6.JERROR}");
+            BubConsole.WriteLine($"Font bundle \"{FontBundle}\" loaded and assigned to {tag}",180,255,0);
             return tag;
         }
 
         public void FreeFont(string tag) {
             if (Fonts.ContainsKey(tag)) Fonts.Remove(tag);
+            BubConsole.WriteLine($"Font released: {tag}",255,180,105);
         }
 
         public string Text(string fonttag,string txt) {
@@ -134,7 +136,7 @@ namespace Bubble {
             } while (Texts.ContainsKey(tag));
             if (!Fonts.ContainsKey(fonttag)) throw new Exception($"No font tagged {fonttag}");
             Texts[tag] = Fonts[fonttag].Text(txt);
-            BubConsole.CSay($"Text Created: {tag};\t\"{txt}\";\t{Texts[tag].Width}x{Texts[tag].Height}");
+            BubConsole.CSay($"Text Created: {tag};\t\"{txt}\";\t{Texts[tag].Width}x{Texts[tag].Height}; with font {fonttag}!");
             return tag;
         }
 

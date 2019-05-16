@@ -74,7 +74,7 @@ namespace Bubble {
             TQMG.Color(0, 200, 255);
             SysFont.DrawText(smsg, ident, 125);
             TQMG.Color(0, 220, 255);
-            SysFont.DrawText(strace, ident, 175);
+            SysFont.DrawText(strace, ident, 250);
             TQMG.Color(0, 255, 255);
             SysFont.DrawText("Hit Escape to exit this application",50,TQMG.ScrHeight-30);
 
