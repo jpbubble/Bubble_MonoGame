@@ -38,14 +38,18 @@ namespace Bubble {
     class BubbleGraphics {
 
         static Dictionary<string, TQMGImage> Images = new Dictionary<string, TQMGImage>();
+        static Dictionary<string, TQMGFont> Fonts = new Dictionary<string, TQMGFont>();
+        static Dictionary<string, TQMGText> Texts = new Dictionary<string, TQMGText>();
 
         static public void InitGraphics(string vm) {
             new BubbleGraphics(SBubble.State(vm).state,vm);
         }
 
+        string vm = "";
         private BubbleGraphics(Lua state,string id) {
             var bt = QuickStream.OpenEmbedded("Graphics.nil");
             var script = bt.ReadString((int)bt.Size);
+            vm = id;
             bt.Close();
             state["BubbleGraphics"] = this;
             SBubble.DoNIL(id, script,"Graphics init script");
@@ -60,6 +64,7 @@ namespace Bubble {
                 Images[tag] = TQMG.GetBundle(file);
             else
                 Images[tag] = TQMG.GetImage(file);
+            if (Images[tag] == null) throw new Exception($"Filed loading {file} at {tag}\n{UseJCR6.JCR6.JERROR}");
             return tag;
         }
 
@@ -70,7 +75,19 @@ namespace Bubble {
         public void HotCenter(string tag) => Images[tag].HotCenter();
         public void HotTopCenter(string tag) => Images[tag].HotTopCenter();
         public void HotBottomCenter(string tag) => Images[tag].HotBottomCenter();
-        public int Height(string tag) => Images[tag].Height;
+        public int Height(string tag) {
+            //BubConsole.CSay($"Trying to get: {tag}");
+            try {
+                if (!Images.ContainsKey(tag)) {
+                    SBubble.MyError("Image.Height():", $"Unknown tag: {tag}", SBubble.TraceLua(vm));
+                    return 0;
+                }
+                return Images[tag].Height;
+            } catch (Exception e) {
+                SBubble.MyError(".NET error", e.Message,"");
+                return 0;
+            }
+        }
         public int Width(string tag) => Images[tag].Width;
 
         public bool HasTag(string tag) => Images.ContainsKey(tag);
@@ -87,6 +104,60 @@ namespace Bubble {
         public void Free(string tag) {
             Images.Remove(tag);
         }
+
+        public void Rect(int x, int y, int w, int h,bool filled = true) {
+            if (filled)
+                TQMG.DrawRectangle(x, y, w, h);
+            else
+                TQMG.DrawLineRect(x, y, w, h);
+        }
+
+        public string LoadFont(string FontBundle, string assign = "") {
+            var tag = assign;
+            var at = 0;
+            if (tag == "") do { at++; tag = $"FONT:{at}"; } while (Fonts.ContainsKey(tag));
+            var font = TQMG.GetFont(FontBundle);
+            Fonts[tag] = font ?? throw new Exception($"Filed loading {FontBundle} at {tag}\n{UseJCR6.JCR6.JERROR}");
+            return tag;
+        }
+
+        public void FreeFont(string tag) {
+            if (Fonts.ContainsKey(tag)) Fonts.Remove(tag);
+        }
+
+        public string Text(string fonttag,string txt) {
+            var tag = "";
+            var i = 0;
+            do {
+                i++;
+                tag = $"TEXT:{i}";
+            } while (Texts.ContainsKey(tag));
+            if (!Fonts.ContainsKey(fonttag)) throw new Exception($"No font tagged {fonttag}");
+            Texts[tag] = Fonts[fonttag].Text(txt);
+            BubConsole.CSay($"Text Created: {tag};\t\"{txt}\";\t{Texts[tag].Width}x{Texts[tag].Height}");
+            return tag;
+        }
+
+        public void FreeText(string tag) {
+            //BubConsole.CSay("...");
+            if (Texts.ContainsKey(tag)) Texts.Remove(tag);
+        }
+
+        public void TextDraw(string tag, int x, int y, byte alignment = 0) {
+            if (!Texts.ContainsKey(tag)) throw new Exception($"Text tag {tag} does not exist!");            
+            Texts[tag].Draw(x, y, (TQMG_TextAlign)alignment);
+        }
+
+        public int TextWidth(string tag) {
+            if (!Texts.ContainsKey(tag)) throw new Exception($"Text tag {tag} does not exist!");
+            return Texts[tag].Width;
+        }
+
+        public int TextHeight(string tag) {
+            if (!Texts.ContainsKey(tag)) throw new Exception($"Text tag {tag} does not exist!");
+            return Texts[tag].Height;
+        }
+
 
     }
 }

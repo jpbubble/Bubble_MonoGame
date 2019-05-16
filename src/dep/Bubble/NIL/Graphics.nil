@@ -11,6 +11,11 @@
 // The class in which most important stuff happens!
 
 // Keep the API out of the regular script! Only these functions and classes may access it :P
+
+#macro TEXT_ALIGN_LEFT 0
+#macro TEXT_ALIGN_RIGHT 1
+#macro TEXT_ALIGN_CENTER 2
+
 var Bubble_Graphics
 Bubble_Graphics=BubbleGraphics
 //BubbleGraphics=nil // waarom is "nil" niet vertaald?
@@ -119,6 +124,123 @@ end
 global void SetColor(int r, int g, int b)
 	Bubble_Graphics:Color(r,g,b);
 end
+
+global int ScreenWidth 
+global int ScreenHeight 
+ScreenWidth  = Bubble_Graphics.ScrWidth;
+ScreenHeight = Bubble_Graphics.ScrHeight;
+
+global void Rect(int x, int y, int w, int h, style)
+	Bubble_Graphics:Rect(x,y,w,h,style!="line")
+end
+
+// Needed as NIL can otherwise not support a forward definition when it 
+// comes to classes!
+#accept TGraphText
+
+class TImageFont
+
+	private string bubbletag
+	private bool autorelease
+	
+	get string tag
+		return self.bubbletag
+	end
+
+	void CONSTRUCTOR(string how, string what)
+		print("CONSTRUCTOR")
+		switch how
+			case "*OBTAIN"
+				self.bubbletag=what
+				self.autorelease=false
+			case "*LOAD"
+				self.bubbletag = Bubble_Graphics:LoadFont(what)
+				self.autorelease=true
+			default
+				error("Unknown image creation instruction")
+		end
+		print("END CONS")
+	end
+	
+	void DESTRUCTOR()
+		if self.autorelease 
+			Bubble_Graphics:FreeFont(self.bubbletag)
+		end
+	end
+	
+	var Text(string txt)
+		return TGraphText.NEW(self,txt)
+	end
+	
+	void Draw(string txt,int x, int y, align)
+		var t
+		t = self.Text(txt)
+		t.Draw(x,y,align or TEXT_ALIGN_LEFT)
+	end
+	
+	int TextWidth(txt)
+		var t
+		t = self.Text(txt)
+		return t.Width
+	end
+	
+	int TextHeight(txt)
+		var t
+		t = self.Text(txt)
+		return t.Height
+	end
+	
+end
+
+
+class TGraphText
+	
+	private string bubbletag
+	
+	void CONSTRUCTOR(font,string txt)
+		self.bubbletag = Bubble_Graphics:Text(font.tag,txt)
+	end
+	
+	void DESTRUCTOR()
+		//CSay("Spoel de plee maar door, jongens! >> "..self.bubbletag)
+		Bubble_Graphics:FreeText(self.bubbletag)
+		//CSay("Doorgespoeld!")
+	end
+	
+	void Draw(int x, int y, align)
+		align=align or TEXT_ALIGN_LEFT
+		assert(align==TEXT_ALIGN_LEFT or align==TEXT_ALIGN_RIGHT or align==TEXT_ALIGN_CENTER,"Invalid text alignment!")
+		Bubble_Graphics:TextDraw(self.bubbletag,x,y,align)
+	end
+	
+	get int Width
+		return Bubble_Graphics:TextWidth(self.bubbletag)
+	end
+	
+	get int Height
+		return Bubble_Graphics:TextHeight(self.bubbletag)
+	end
+	
+end
+
+
+global var LoadImageFont(string font,assign)
+	if assign
+		assert(type(assign)=="string","Invalid tag type to assign a font font!")
+		//CSay("font: "..font.."; assign: "..assign)
+		Bubble_Graphics:LoadFont(font,assign)
+		return TImageFont.NEW("*OBTAIN",assign)
+	else
+		return TImageFont.NEW("*LOAD",font)
+	end
+end
+global var LoadFont
+LoadFont=LoadImageFont
+
+global var GetFont(string tag)
+	return TImageFont.NEW("*OBTAIN",tag)
+end
+
 
 CSay("Graphics module loaded")
 

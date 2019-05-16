@@ -62,6 +62,11 @@ namespace Bubble {
             JCR6_zlib.Init();
             JCR6_jxsrcca.Init();
 
+            // I want 800x600
+            graphics.PreferredBackBufferWidth = 800;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferHeight = 600;   // set this value to the desired height of your window
+            graphics.ApplyChanges();
+
             // Bubble
             // TODO: Link the error handler!
             SBubble.Init("MONOGAME",Error.GoError);

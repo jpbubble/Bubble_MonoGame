@@ -76,6 +76,7 @@ namespace Bubble {
             if (!qstr.Prefixed(flow, "FLOW_")) flow = $"FLOW_{flow}";
             SBubble.NewState(flow, file);
             BubConsole.WriteLine($"Created new flow: {flow}");
+            SBubble.State(flow).state.DoString("if BUB_Load then BUB_Load() end");
         }
 
         public void KillFlow(string flow) {
@@ -100,9 +101,34 @@ namespace Bubble {
             }
         }
 
+        public void LoadState(string s,string file) {
+            s = s.ToUpper();
+            if (qstr.Prefixed(s, "FLOW_")) throw new Exception("Non-Flow states may NOT be prefixed with FLOW_");
+            SBubble.NewState(s,file);
+            SBubble.State(s).state.DoString("if BUB_Load then BUB_Load() end");
+        }
+
+        public void DoStateLua(string s, string script,string chunk="LUA:DOSTATE") {
+            SBubble.State(s).DoString(script, chunk);
+        }
+
+        public void DoStateNIL(string s, string script, string chunk = "NIL:DOSTATE") {
+            SBubble.DoNIL(s, script, chunk);
+        }
+
+        public void KillState(string s) {
+            s = s.ToUpper();
+            if (qstr.Prefixed(s, "FLOW_")) throw new Exception("Non-Flow states may NOT be prefixed with FLOW_");
+            SBubble.KillState(s);
+        }
+
+        public bool StateExists(string s) => SBubble.HaveState(s);
+        
+
         static public void Init(string state) {
             new APIFlow(state);
         }
+        
         
     }
 

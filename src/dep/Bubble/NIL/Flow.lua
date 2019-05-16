@@ -12,4 +12,12 @@ GotoFlow=GoToFlow
 NewFlow=LoadFlow
 
 
+function LoadState(state,file) Bubble_Flow:LoadState(state,file) end
+function KillState(state) Bubble_Flow:KillState(state) end
+
+function LuaDoString(state,script,chunk) Bubble_Flow:DoStateLua(state,script,chunk or "LUA:DOSTATE") end
+function NILDoString(state,script,chunk) Bubble_Flow:DoStateNIL(state,script,chunk or "NIL:DOSTATE") end
+
+function StateExists(state) return Bubble_Flow:StateExists(state) end
+
 print("Flow Manager set up")
