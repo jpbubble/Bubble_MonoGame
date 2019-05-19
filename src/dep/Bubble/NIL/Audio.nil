@@ -9,6 +9,18 @@ class TAudioInstance
 		Bubble_Audio:FreeInstance(self.buftag)
 	end
 	
+	void Stop()
+		Bubble_Audio:StopInstance(self.buftag)
+	end
+	
+	void Pause()
+		Bubble_Audio:PauseInstance(self.buftag)
+	end
+	
+	void Resume()
+		Bubble_Audio:ResumeInstance(self.buftag)
+	end
+	
 end
 
 class TAudio

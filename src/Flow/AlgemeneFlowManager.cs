@@ -21,8 +21,9 @@
 // Please note that some references to data like pictures or audio, do not automatically
 // fall under this licenses. Mostly this is noted in the respective files.
 // 
-// Version: 19.05.16
+// Version: 19.05.19
 // EndLic
+
 
 
 
@@ -123,7 +124,12 @@ namespace Bubble {
             SBubble.KillState(s);
         }
 
-        public bool StateExists(string s) => SBubble.HaveState(s);
+        public int StateExists(string s) {
+            var r = SBubble.HaveState(s);
+            BubConsole.CSay($"Sending outcome {r} to Lua!");
+            if (r) return 1;
+            return 0;
+        }
         
 
         static public void Init(string state) {
@@ -221,6 +227,7 @@ namespace Bubble {
 
     }
 }
+
 
 
 

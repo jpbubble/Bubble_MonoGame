@@ -21,8 +21,9 @@
 // Please note that some references to data like pictures or audio, do not automatically
 // fall under this licenses. Mostly this is noted in the respective files.
 // 
-// Version: 19.05.16
+// Version: 19.05.19
 // EndLic
+
 
 
 
@@ -96,6 +97,7 @@ namespace Bubble {
             SBubble.AddInit(Bubble_Audio.Init);
             SBubble.AddInit(APIFlow.Init);
             SBubble.AddInit(BubbleSuperGlobal.Init);
+            SBubble.AddInit(Bubble_Input.Init);
 
             // Start init script
             FlowManager.StartInitFlow();
@@ -150,6 +152,7 @@ namespace Bubble {
         }
     }
 }
+
 
 
 
