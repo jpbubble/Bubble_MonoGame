@@ -204,6 +204,9 @@
     <Compile Include="..\..\Libraries\BubbleMainClass.cs">
       <Link>dep\Bubble\Class\BubbleMainClass.cs</Link>
     </Compile>
+    <Compile Include="..\..\Libraries\BubbleSave.cs">
+      <Link>dep\Bubble\Class\BubbleSave.cs</Link>
+    </Compile>
     <Compile Include="..\..\Libraries\BubbleSuperGlobal.cs">
       <Link>dep\Bubble\Class\BubbleSuperGlobal.cs</Link>
     </Compile>
