@@ -137,7 +137,7 @@ namespace Bubble {
             } while (Texts.ContainsKey(tag));
             if (!Fonts.ContainsKey(fonttag)) throw new Exception($"No font tagged {fonttag}");
             Texts[tag] = Fonts[fonttag].Text(txt);
-            BubConsole.CSay($"Text Created: {tag};\t\"{txt}\";\t{Texts[tag].Width}x{Texts[tag].Height}; with font {fonttag}!");
+            //BubConsole.CSay($"Text Created: {tag};\t\"{txt}\";\t{Texts[tag].Width}x{Texts[tag].Height}; with font {fonttag}!");
             return tag;
         }
 

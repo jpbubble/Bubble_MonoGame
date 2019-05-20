@@ -98,6 +98,7 @@ namespace Bubble {
             SBubble.AddInit(APIFlow.Init);
             SBubble.AddInit(BubbleSuperGlobal.Init);
             SBubble.AddInit(Bubble_Input.Init);
+            SBubble.AddInit(Bubble_Save.Init);
 
             // Start init script
             FlowManager.StartInitFlow();

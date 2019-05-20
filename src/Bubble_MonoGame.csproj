@@ -299,6 +299,9 @@
     <EmbeddedResource Include="..\..\Libraries\BubbleSuperGlobal.lua">
       <Link>dep\Bubble\NIL\BubbleSuperGlobal.lua</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Libraries\BubbleSave.nil">
+      <Link>dep\Bubble\NIL\BubbleSave.nil</Link>
+    </EmbeddedResource>
     <None Include="app.manifest" />
     <EmbeddedResource Include="dep\Bubble\NIL\Graphics.nil" />
     <EmbeddedResource Include="dep\Bubble\NIL\Flow.lua" />
