@@ -21,8 +21,9 @@
 // Please note that some references to data like pictures or audio, do not automatically
 // fall under this licenses. Mostly this is noted in the respective files.
 // 
-// Version: 19.05.11
+// Version: 19.05.21
 // EndLic
+
 
 
 
@@ -37,13 +38,15 @@ namespace Bubble {
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main() {            
+        static void Main() {
+            TrickyUnits.Dirry.InitAltDrives();
             using (var game = new Bubble_MonoGame_Init())
                 game.Run();
             
         }
     }
 }
+
 
 
 

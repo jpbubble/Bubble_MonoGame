@@ -26,4 +26,9 @@ function StateExists(state)
 	return ret == 1
 end
 
+function Bye()
+	Bubble_Flow:Bye()
+end
+
+
 print("Flow Manager set up")

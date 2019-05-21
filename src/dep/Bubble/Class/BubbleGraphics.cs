@@ -21,8 +21,9 @@
 // Please note that some references to data like pictures or audio, do not automatically
 // fall under this licenses. Mostly this is noted in the respective files.
 // 
-// Version: 19.05.16
+// Version: 19.05.21
 // EndLic
+
 
 
 
@@ -129,16 +130,21 @@ namespace Bubble {
         }
 
         public string Text(string fonttag,string txt) {
-            var tag = "";
-            var i = 0;
-            do {
-                i++;
-                tag = $"TEXT:{i}";
-            } while (Texts.ContainsKey(tag));
-            if (!Fonts.ContainsKey(fonttag)) throw new Exception($"No font tagged {fonttag}");
-            Texts[tag] = Fonts[fonttag].Text(txt);
-            //BubConsole.CSay($"Text Created: {tag};\t\"{txt}\";\t{Texts[tag].Width}x{Texts[tag].Height}; with font {fonttag}!");
-            return tag;
+            try {
+                var tag = "";
+                var i = 0;
+                do {
+                    i++;
+                    tag = $"TEXT:{i}";
+                } while (Texts.ContainsKey(tag));
+                if (!Fonts.ContainsKey(fonttag)) throw new Exception($"No font tagged {fonttag}");
+                Texts[tag] = Fonts[fonttag].Text(txt);
+                //BubConsole.CSay($"Text Created: {tag};\t\"{txt}\";\t{Texts[tag].Width}x{Texts[tag].Height}; with font {fonttag}!");
+                return tag;
+            } catch (Exception er) {
+                SBubble.MyError("Text error", er.Message, "");
+                return "";
+            }
         }
 
         public void FreeText(string tag) {
@@ -164,6 +170,7 @@ namespace Bubble {
 
     }
 }
+
 
 
 
