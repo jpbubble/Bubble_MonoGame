@@ -21,11 +21,8 @@
 // Please note that some references to data like pictures or audio, do not automatically
 // fall under this licenses. Mostly this is noted in the respective files.
 // 
-// Version: 19.05.21
+// Version: 19.05.19
 // EndLic
-
-
-
 
 
 
@@ -121,13 +118,13 @@ namespace Bubble {
 
         public void KillState(string s) {
             s = s.ToUpper();
-            if (qstr.Prefixed(s, "FLOW_")) throw new Exception("Non-Flow states may NOT be prefixed with FLOW_");
+            //if (qstr.Prefixed(s, "FLOW_")) SBubble.MyError("KILL Error","Non-Flow states may NOT be prefixed with FLOW_","");
             SBubble.KillState(s);
         }
 
         public int StateExists(string s) {
             var r = SBubble.HaveState(s);
-            BubConsole.CSay($"Sending outcome {r} to Lua!");
+            //BubConsole.CSay($"Sending outcome {r} to Lua!");
             if (r) return 1;
             return 0;
         }
@@ -137,7 +134,7 @@ namespace Bubble {
             new APIFlow(state);
         }
 
-        static public void Bye() {
+        public void Bye() {
             BubConsole.CSay("Bye request initiated!");
             FlowManager.TimeToDie = true;
         }
@@ -183,6 +180,7 @@ namespace Bubble {
             Time = gt.ElapsedGameTime;
             MS = Mouse.GetState();
             KB = Keyboard.GetState();
+            TQMGKey.Start(FlowManager.KB);
             if (HFC != null) HFC.Update(gt);
         }
 
@@ -233,7 +231,6 @@ namespace Bubble {
 
     }
 }
-
 
 
 

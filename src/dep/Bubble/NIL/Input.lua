@@ -49,7 +49,20 @@ setmetatable(Mouse,MetaMouse)
 
 
 local MetaKeyboard = {
-
+	__index = function(t,k)
+		local key = k:upper()
+		if key=="NAME" then
+			return Bubble_Input.KeyName;
+		elseif key=="CODE" then
+			return Bubble_Input.KeyCode;
+		elseif key=="CHAR" then
+			return Bubble_Input.KeyChar;
+		elseif key=="BYTE" then
+			return Bubble_Input.KeyByte;
+		else
+			BubbleCrash("I don't know what Keyboard."..k.." is supposed to mean!")
+		end
+	end
 }
 setmetatable(Keyboard,MetaKeyboard)
 

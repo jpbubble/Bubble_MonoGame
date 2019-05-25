@@ -103,6 +103,11 @@ namespace Bubble {
             TQMG.Color(r, g, b);
         }
 
+        public byte Alpha {
+            set => TQMG.SetAlpha(value);
+            get => TQMG.GetAlpha();
+        }
+
         public void Free(string tag) {
             Images.Remove(tag);
         }

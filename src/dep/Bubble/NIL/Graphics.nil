@@ -223,6 +223,42 @@ class TGraphText
 	
 end
 
+class TGraphColor
+	int _cR
+	int _cG
+	int _cB
+	
+	void _Update()
+		SetColor(self._cR,self._cG,self._cB)
+	end
+	
+	set int Red
+		self._cR = value
+		self._Update()
+	end
+
+	set int Green
+		self._cG = value
+		self._Update()
+	end
+	
+	set int Blue
+		self._cB = value
+		self._Update()
+	end
+	
+	set int Alpha
+		Bubble_Graphics.Alpha = value
+	end
+	
+	get int Alpha
+		return Bubble_Graphics.Alpha
+	end
+end
+global var GraphColor
+GraphColor=TGraphColor.NEW()
+
+
 
 global var LoadImageFont(string font,assign)
 	if assign

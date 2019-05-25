@@ -58,6 +58,11 @@ namespace Bubble {
 
             }
         }
+
+        public int KeyCode => (int)TQMGKey.GetKey();
+        public string KeyName => $"{TQMGKey.GetKey()}";
+        public string KeyChar => $"{TQMGKey.GetChar()}";
+        public byte KeyByte => (byte)TQMGKey.GetChar();
     }
 }
 

@@ -18,11 +18,13 @@ function KillState(state) Bubble_Flow:KillState(state) end
 function LuaDoString(state,script,chunk) Bubble_Flow:DoStateLua(state,script,chunk or "LUA:DOSTATE") end
 function NILDoString(state,script,chunk) Bubble_Flow:DoStateNIL(state,script,chunk or "NIL:DOSTATE") end
 
+function KillFlow(flow) KillState("FLOW_"..flow) end
+
 function StateExists(state) 
-	CSay("Glue: Checking state "..(state or "<<NIL>>"))
+	--CSay("Glue: Checking state "..(state or "<<NIL>>"))
 	local ret = Bubble_Flow:StateExists(state or "nil") 
 	--if ret then CSay('Lua received: true') else CSay('Lua received: false') end
-	CSay(("Received %d!"):format(ret))
+	--CSay(("Received %d!"):format(ret))
 	return ret == 1
 end
 
