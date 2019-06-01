@@ -21,8 +21,9 @@
 // Please note that some references to data like pictures or audio, do not automatically
 // fall under this licenses. Mostly this is noted in the respective files.
 // 
-// Version: 19.05.21
+// Version: 19.06.01
 // EndLic
+
 
 
 using System;
@@ -65,5 +66,6 @@ namespace Bubble {
         public byte KeyByte => (byte)TQMGKey.GetChar();
     }
 }
+
 
 
