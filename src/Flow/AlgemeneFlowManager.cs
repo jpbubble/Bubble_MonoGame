@@ -69,7 +69,7 @@ namespace Bubble {
             else {
                 FlowManager.CurrentFlow = flow;
                 BubConsole.WriteLine($"Flow set to: {flow}");
-                SBubble.State(flow).DoString("if BUB_Arrive then assert(type(BUB_Arrive)=='function','BUB_Arrive must be a function but it is a '..type(BUB_Arrive)) BUB_Arrive()");
+                SBubble.State(flow).DoString("if BUB_Arrive then assert(type(BUB_Arrive)=='function','BUB_Arrive must be a function but it is a '..type(BUB_Arrive)) BUB_Arrive() end");
             }
         }
 
