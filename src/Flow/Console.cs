@@ -49,6 +49,9 @@ namespace Bubble {
     }
 
     class BubConsole:HardFlowClass { // The "bub" prefix is to prevent conflicts with the System Console
+        static bool AllowWriteLog => SBubble.BGC("BubbleLogD")!=""; // Bubble Log Dump
+        static string WriteLogFile => Dirry.AD(SBubble.BGC("BubbleLogD"));
+        static QuickStream WrLog;
         static public int MaxLines = 5000;
         static List<BCLine> Line = new List<BCLine>();
         static public byte CSayR = 0, CSayG = 180, CSayB = 255;
@@ -81,6 +84,7 @@ namespace Bubble {
                 Debug.WriteLine($"Bubble Console:> {msg}");
                 Line.Add(line);
                 if (Line.Count > MaxLines) Line.RemoveAt(0);
+                if (WrLog != null) WrLog.WriteString($"<span style=\"color: #{r.ToString("X2")}{g.ToString("X2")}{b.ToString("X2")};\">{msg}</span><br />\n",true);
             }
         }
 
@@ -89,6 +93,19 @@ namespace Bubble {
         static public void CError(string msg) => WriteLine($"?{msg}", 255, 0, 0);
 
         static BubConsole() {
+            if (AllowWriteLog) {
+                try {
+                    WriteLine($"Output will be written to {WriteLogFile}", 255, 180, 0);
+                    System.IO.Directory.CreateDirectory(qstr.ExtractDir(WriteLogFile));
+                    WrLog = QuickStream.WriteFile(WriteLogFile);
+                    WrLog.WriteString("<html>\n<head><title>Log from Bubble!</title></head><style>body{ color: white; background-color: black; font-family: courier; font-size:20pt; }</style>\n\n",true);
+                } catch (Exception EX) {
+                    WriteLine("ERROR!",255,0,0);
+                    WriteLine($"{EX.Message}",255,0,0);
+                    WriteLine("Due to this error I cannot guarantee the log will work!");
+                    Console.Beep();
+                }
+            }
             WriteLine($"Bubble {MKL.Newest} - (c) Jeroen P. Broks", 255, 255, 0);
             var s = new NLua.Lua();
             var v = (string)s.DoString("return _VERSION")[0];
@@ -102,6 +119,10 @@ namespace Bubble {
             } else {
                 WriteLine("No background found", 255, 0, 0);
             }
+        }
+
+        ~BubConsole() {
+            WrLog.Close();
         }
 
 
