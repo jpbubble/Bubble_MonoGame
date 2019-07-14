@@ -21,8 +21,9 @@
 // Please note that some references to data like pictures or audio, do not automatically
 // fall under this licenses. Mostly this is noted in the respective files.
 // 
-// Version: 19.05.16
+// Version: 19.07.14
 // EndLic
+
 
 
 
@@ -94,6 +95,7 @@ namespace Bubble {
         }
     }
 }
+
 
 
 
