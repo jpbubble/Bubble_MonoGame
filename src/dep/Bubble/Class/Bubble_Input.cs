@@ -60,6 +60,24 @@ namespace Bubble {
             }
         }
 
+        Dictionary<string, Keys> keyname2code = new Dictionary<string, Keys>();
+        public bool HeldKey(string name) {
+            name = name.ToUpper();
+            if (!keyname2code.ContainsKey(name)) {
+                var found = false;
+                foreach(Keys k in (Keys[]) Enum.GetValues(typeof(Keys))) {
+                    var a = $"{k}".ToUpper();
+                    if (name==a) {
+                        keyname2code[name] = k;
+                        found = true;
+                    }
+                }
+                if (!found)
+                    SBubble.MyError("Keyboard error", $"No key named {name} appears to exist, or is at least not named to this engine!", "");
+            }            
+            return TQMGKey.Held(keyname2code[name]);            
+        }
+
         public int KeyCode => (int)TQMGKey.GetKey();
         public string KeyName => $"{TQMGKey.GetKey()}";
         public string KeyChar => $"{TQMGKey.GetChar()}";

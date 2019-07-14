@@ -62,10 +62,12 @@ namespace Bubble {
 
         public override void Draw(GameTime gameTime) {
             const int ident = 5;
+            int DY = 0;
+            if (Death.Height < TQMG.ScrHeight) DY = TQMG.ScrHeight - Death.Height;
             TQMG.Color(0, 18, 25);
             TQMG.DrawRectangle(0, 0, TQMG.ScrWidth, TQMG.ScrHeight);
             TQMG.Color(0, 36, 50);
-            Death.Draw(0, 0);
+            Death.Draw(0, DY);
             TQMG.Color(255, 180, 100);
             SysFont.DrawText("OOPS!", ident, 0);
             TQMG.Color(255, 255, 0);

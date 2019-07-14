@@ -123,7 +123,8 @@ namespace Bubble {
         }
 
         ~BubConsole() {
-            WrLog.Close();
+            if (WrLog!=null)
+                WrLog.Close();
         }
 
 

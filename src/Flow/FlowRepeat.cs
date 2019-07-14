@@ -38,7 +38,15 @@ namespace Bubble {
         readonly public static FlowRepeat me = new FlowRepeat();
 
         public override void Update(GameTime gameTime) {
-            State.DoString($"(BUB_Update or {FlowManager.NOTHING}()", "Draw");
+            try {
+                State.DoString($"(BUB_Update or {FlowManager.NOTHING})()", "Draw");
+            } catch (Exception err) {
+                var trace = State.GetDebugTraceback();
+#if DEBUG
+                trace += $"\n\n{err.StackTrace}";
+#endif
+                SBubble.MyError("Update Callback error", err.Message, trace);
+            }
         }
     }
 }

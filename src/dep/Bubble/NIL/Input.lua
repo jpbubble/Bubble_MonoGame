@@ -25,6 +25,12 @@ Mouse = {}
 Keyboard = {}
 -- TODO: Joystick/Joypad
 
+
+local function showmouse()
+	local MousePointer = TImage.Obtain("MOUSEPOINTER")
+	MousePointer.Draw(Mouse.X,Mouse.Y)
+end
+
 local MetaMouse = {
 	__index = function(t,k)
 		local key=k:upper()
@@ -40,8 +46,23 @@ local MetaMouse = {
 			return Bubble_Input:Held(3)
 		elseif key=="MOUSEINSIDE" then
 			return Bubble_Input.X>=0 and Bubble_Input.Y>0 and Bubble_Input.X<Screen.Width and Bubble_Input.Y<Screen.Height
+		elseif key=="SHOW" then
+			return showmouse
+		elseif key=="POINTER" then
+			return MousePointer
 		else
 			BubbleCrash("Mouse."..k.." does not exist!")
+		end
+	end,
+
+	__newindex = function(t,k,v)
+		local key=k:upper()
+		if key=="POINTER" then 
+			LoadImage(v,"MOUSEPOINTER");
+			CSay(("Mouse pointer image changed to '%s'!"):format(v))
+			--if not MousePointer then CSay("No mouse pointer is now there, though, so Mouse.Show() will be ignored!") end
+		else
+			BubbleCrash("Mouse."..k.." is either read-only or non-existent!")
 		end
 	end
 
@@ -60,6 +81,14 @@ local MetaKeyboard = {
 			return Bubble_Input.KeyChar;
 		elseif key=="BYTE" then
 			return Bubble_Input.KeyByte;
+		elseif key=="HELD" then
+			return function(b)
+				if type(b)=='string' then
+			       return Bubble_Input:HeldKey(b)
+				else
+					return nil
+				end
+			end
 		else
 			BubbleCrash("I don't know what Keyboard."..k.." is supposed to mean!")
 		end

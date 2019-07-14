@@ -52,23 +52,28 @@ namespace Bubble {
         }
 
         public string Load(string file,string tag = "") {
-            Debug.Print($"Loading Audio: {file}\t{tag}");
-            var bt = SBubble.JCR.AsMemoryStream(file);
-            if (bt==null) throw new Exception(UseJCR6.JCR6.JERROR);
-            Debug.WriteLine($"Retrieving from memstream");
-            SoundEffect sfx = SoundEffect.FromStream(bt);
-            Debug.Print($"Loaded {file}");
-            if (sfx == null) throw new Exception("Audio load failed!");
-            bt.Close();
-            Debug.WriteLine("Checking tag");
-            if (tag == "") { 
-                var h = file.Length;
-                for(int i = 0; i < file.Length; i++) h += (byte)file[i];
-                do h++; while (AudioMap.ContainsKey($"AUDIO{h}"));
-                tag = $"AUDIO{h}";
+            try {
+                Debug.Print($"Loading Audio: {file}\t{tag}");
+                var bt = SBubble.JCR.AsMemoryStream(file);
+                if (bt == null) throw new Exception(UseJCR6.JCR6.JERROR);
+                Debug.WriteLine($"Retrieving from memstream");
+                SoundEffect sfx = SoundEffect.FromStream(bt);
+                Debug.Print($"Loaded {file}");
+                if (sfx == null) throw new Exception("Audio load failed!");
+                bt.Close();
+                Debug.WriteLine("Checking tag");
+                if (tag == "") {
+                    var h = file.Length;
+                    for (int i = 0; i < file.Length; i++) h += (byte)file[i];
+                    do h++; while (AudioMap.ContainsKey($"AUDIO{h}"));
+                    tag = $"AUDIO{h}";
+                }
+                Debug.Print($"Assigned on {tag}");
+                AudioMap[tag] = sfx;
+            } catch (Exception Ex) {
+                tag = "ERROR!";
+                SBubble.MyError("Audio error", Ex.Message, $"LoadAudio(\"{file}\",\"{tag}\");");
             }
-            Debug.Print($"Assigned on {tag}");
-            AudioMap[tag] = sfx;
             return tag;
         }
 

@@ -77,7 +77,11 @@ class TImage
 	void Draw(int x,int y,frame)
 	     Bubble_Graphics:Draw(self.bubbletag,x,y,frame or 0)
 	end
-	
+
+	void Tile(int x,int y,int w,int h,frame)
+		Bubble_Graphics:Tile(self.bubbletag,x,y,w,h,frame or 0)
+	end
+
 	static var Load(string file)
 		return TImage.NEW("*LOAD",file)
 	end
@@ -98,7 +102,7 @@ class TScreen
 	end
 end
 global var Screen 
-Screen = TScreen.NEW()
+Screen = new TScreen
 
 
 // declaring variables of class-types, is not fully working right. With "var" anything is accepted, so that's why that type is used.
@@ -256,7 +260,7 @@ class TGraphColor
 	end
 end
 global var GraphColor
-GraphColor=TGraphColor.NEW()
+GraphColor=new TGraphColor()
 
 
 
@@ -265,16 +269,16 @@ global var LoadImageFont(string font,assign)
 		assert(type(assign)=="string","Invalid tag type to assign a font font!")
 		//CSay("font: "..font.."; assign: "..assign)
 		Bubble_Graphics:LoadFont(font,assign)
-		return TImageFont.NEW("*OBTAIN",assign)
+		return new TImageFont("*OBTAIN",assign)
 	else
-		return TImageFont.NEW("*LOAD",font)
+		return new TImageFont("*LOAD",font)
 	end
 end
 global var LoadFont
 LoadFont=LoadImageFont
 
 global var GetFont(string tag)
-	return TImageFont.NEW("*OBTAIN",tag)
+	return new TImageFont("*OBTAIN",tag)
 end
 
 

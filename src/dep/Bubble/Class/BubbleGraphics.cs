@@ -100,6 +100,11 @@ namespace Bubble {
             Images[tag].Draw(x, y, frame);
         }
 
+        public void Tile(string tag,int x,int y, int width,int height,int frame) {
+            if (!Images.ContainsKey(tag)) SBubble.MyError("Bubble Graphics Error", $"There is no image tagged'{tag}'", SBubble.TraceLua(FlowManager.CurrentFlow));
+            TQMG.Tile(Images[tag], x, y, 0, 0, width, height, frame);
+        }
+
         public void Color(byte r,byte g, byte b) {
             TQMG.Color(r, g, b);
         }
@@ -122,11 +127,21 @@ namespace Bubble {
 
         public string LoadFont(string FontBundle, string assign = "") {
             var tag = assign;
-            var at = 0;
-            if (tag == "") do { at++; tag = $"FONT:{at}"; } while (Fonts.ContainsKey(tag));
-            var font = TQMG.GetFont(FontBundle);
-            Fonts[tag] = font ?? throw new Exception($"Failed loading {FontBundle} at {tag}\n{UseJCR6.JCR6.JERROR}");
-            BubConsole.WriteLine($"Font bundle \"{FontBundle}\" loaded and assigned to {tag}",180,255,0);
+            try {
+                var at = 0;
+                if (tag == "") do { at++; tag = $"FONT:{at}"; } while (Fonts.ContainsKey(tag));
+                var font = TQMG.GetFont(FontBundle);
+                Fonts[tag] = font ?? throw new Exception($"Failed loading {FontBundle} at {tag}\n{UseJCR6.JCR6.JERROR}");
+                BubConsole.WriteLine($"Font bundle \"{FontBundle}\" loaded and assigned to {tag}", 180, 255, 0);
+            } catch (Exception e) {
+                SBubble.MyError("Font error!", e.Message, $"LoadImageFont(\"{FontBundle}\",\"{assign}\");\n\n{e.StackTrace}");
+                BubConsole.WriteLine("ERROR!", 255, 0, 0);
+                BubConsole.WriteLine(e.Message, 180, 0, 255);
+#if DEBUG
+                BubConsole.WriteLine(e.StackTrace, 255, 180, 0);
+#endif
+                tag = "";
+            }
             return tag;
         }
 
