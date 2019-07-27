@@ -16,9 +16,8 @@ THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-Version 19.07.14
+Version 19.06.01
 ]]
-
 
 
 
@@ -27,9 +26,13 @@ Keyboard = {}
 -- TODO: Joystick/Joypad
 
 
+local mouseheld = {}
+
 local function showmouse()
 	local MousePointer = TImage.Obtain("MOUSEPOINTER")
-	MousePointer.Draw(Mouse.X,Mouse.Y)
+	if Mouse.MouseInside then
+		MousePointer.Draw(Mouse.X,Mouse.Y)
+	end
 end
 
 local MetaMouse = {
@@ -47,6 +50,12 @@ local MetaMouse = {
 			return Bubble_Input:Held(3)
 		elseif key=="MOUSEINSIDE" then
 			return Bubble_Input.X>=0 and Bubble_Input.Y>0 and Bubble_Input.X<Screen.Width and Bubble_Input.Y<Screen.Height
+		elseif key=="HITLEFT" then
+			return Bubble_Input:Hit(1)
+		elseif key=="HITRIGHT" then
+			return Bubble_Input:Hit(2)
+		elseif key=="HITCENTER" then
+			return Bubble_Input:Hit(3)
 		elseif key=="SHOW" then
 			return showmouse
 		elseif key=="POINTER" then
@@ -98,7 +107,6 @@ local MetaKeyboard = {
 setmetatable(Keyboard,MetaKeyboard)
 
 CSay("Mouse and Keyboard support present")
-
 
 
 

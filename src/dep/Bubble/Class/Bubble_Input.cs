@@ -46,7 +46,7 @@ namespace Bubble {
 
         public int X => FlowManager.MS.X;
         public int Y => FlowManager.MS.Y;
-        public bool Held(byte b) {
+        public static bool SHeld(byte b) {
             switch (b) {
                 case 1:
                     return FlowManager.MS.LeftButton == ButtonState.Pressed;
@@ -57,9 +57,17 @@ namespace Bubble {
                 default:
                     SBubble.MyError("HEY!", "I don't know what you mean by mouse button #{b}", "There's only 1,2 and 3!");
                     return false;
-
             }
         }
+        public bool Held(byte b) => SHeld(b); // Statics cannot be used for API calls.
+
+        static bool[] MHld = new bool[] { false, false, false, false };
+        public bool Hit(byte b) => (!MHld[b]) && Held(b);
+
+        public static void MouseHitUpdate() {
+            for (byte i = 1; i <= 3; i++) MHld[i] = SHeld(i);
+        }
+        
 
         Dictionary<string, Keys> keyname2code = new Dictionary<string, Keys>();
         public bool HeldKey(string name) {

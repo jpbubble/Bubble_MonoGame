@@ -83,11 +83,11 @@ class TImage
 	end
 
 	static var Load(string file)
-		return TImage.NEW("*LOAD",file)
+		return new TImage("*LOAD",file)
 	end
 	
 	static var Obtain(string tag)
-		return TImage.NEW("*OBTAIN",tag)
+		return new TImage("*OBTAIN",tag)
 	end
 
 end
@@ -173,13 +173,20 @@ class TImageFont
 	end
 	
 	var Text(string txt)
-		return TGraphText.NEW(self,txt)
+		// I do need to set up a class forwarding system :-/
+		#pure
+		return TGraphText(self,txt)
+		#endpure
 	end
 	
 	void Draw(string txt,int x, int y, align)
 		var t
 		t = self.Text(txt)
 		t.Draw(x,y,align or TEXT_ALIGN_LEFT)
+	end
+
+	void DrawText(string txt,int x, int y, align)
+		self.Draw(txt,x,y,align)
 	end
 	
 	int TextWidth(txt)
@@ -216,6 +223,7 @@ class TGraphText
 		assert(align==TEXT_ALIGN_LEFT or align==TEXT_ALIGN_RIGHT or align==TEXT_ALIGN_CENTER,"Invalid text alignment!")
 		Bubble_Graphics:TextDraw(self.bubbletag,x,y,align)
 	end
+
 	
 	get int Width
 		return Bubble_Graphics:TextWidth(self.bubbletag)

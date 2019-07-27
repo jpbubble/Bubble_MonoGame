@@ -86,7 +86,7 @@ namespace Bubble {
                 Debug.WriteLine($"Bubble Console:> {msg}");
                 Line.Add(line);
                 if (Line.Count > MaxLines) Line.RemoveAt(0);
-                if (WrLog != null) WrLog.WriteString($"<span style=\"color: #{r.ToString("X2")}{g.ToString("X2")}{b.ToString("X2")};\">{msg}</span><br />\n",true);
+                if (WrLog != null) WrLog.WriteString($"<span style=\"color: #{r.ToString("X2")}{g.ToString("X2")}{b.ToString("X2")};\">{msg.Replace("\n","<br />")}</span><br />\n",true);
             }
         }
 

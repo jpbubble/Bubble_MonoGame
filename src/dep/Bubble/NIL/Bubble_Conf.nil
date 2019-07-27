@@ -1,0 +1,30 @@
+global void Notify(string message,caption,icon)
+	caption=caption or ""
+	icon=icon or ""
+	assert(type(caption)=="string","Caption must be string!")
+	assert(type(caption)=="icon","Icon must be string!")
+	Bubble_Conf:Annoy(message,caption,icon)
+end
+delegate Alert
+delegate Annoy
+Alert = Notify
+Annoy = Notify
+
+
+global bool Yes(string Question)
+	return Bubble_Conf:Yes(Question)
+end
+
+global delegate YesNoCancel
+global string YNC(string Question)
+	return Bubble_Conf:YNC(Question)
+end
+YesNoCancel=YNC
+
+global delegate FailureBox
+global string BoxFailure(string Question)
+	return Bubble_Conf:FailureBox(Question)
+end
+FailureBox = BoxFailure
+
+
