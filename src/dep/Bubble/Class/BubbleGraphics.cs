@@ -21,8 +21,9 @@
 // Please note that some references to data like pictures or audio, do not automatically
 // fall under this licenses. Mostly this is noted in the respective files.
 // 
-// Version: 19.07.14
+// Version: 19.08.02
 // EndLic
+
 
 using System;
 using System.Collections.Generic;
@@ -191,6 +192,7 @@ namespace Bubble {
 
     }
 }
+
 
 
 
