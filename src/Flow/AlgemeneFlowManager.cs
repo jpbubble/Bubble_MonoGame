@@ -24,11 +24,6 @@
 // Version: 19.06.09
 // EndLic
 
-
-
-
-
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -131,11 +126,14 @@ namespace Bubble {
             if (r) return 1;
             return 0;
         }
+
+        public string CurrentFlow => FlowManager.CurrentFlow;
         
 
         static public void Init(string state) {
             new APIFlow(state);
         }
+        
 
         public void Bye() {
             BubConsole.CSay("Bye request initiated!");

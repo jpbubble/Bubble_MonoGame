@@ -24,12 +24,6 @@
 // Version: 19.07.14
 // EndLic
 
-
-
-
-
-
-
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -62,6 +56,7 @@ namespace Bubble {
         static int ScrollUp=0;
         static string TypingCommand = "";
         static HardFlowClass returnto = null;
+        static public bool BubConsScriptSuccess = false;
         int LinesOnScreen => TQMG.ScrHeight / 22;
         int StartY {
             get {
@@ -160,7 +155,7 @@ namespace Bubble {
                 case "FUCK":
                 case "PISS":
                 case "SHIT":
-                    WriteLine("?Did you mother never tell you not to say such words?",255,0,0);
+                    WriteLine("?Did you mother never tell you not to say such words?", 255, 0, 0);
                     break;
                 case "BYE":
                 case "EXIT":
@@ -171,7 +166,38 @@ namespace Bubble {
                     foreach (string a in arg) CSay(a);
                     break;
                 default:
-                    WriteLine("?Not understood",255,0,0);
+                    try {
+                        // Need to group as some extra vars are needed!
+                        {
+                            var CFlow = FlowManager.CurrentFlow;
+                            var FFlow = $"FLOW_{CFlow}";
+                            var SFlow = SBubble.State(CFlow);
+                            var JArgs = "";
+                            BubConsScriptSuccess = false;
+                            foreach (string a in arg) {
+                                if (JArgs != "") JArgs += ", ";
+                                JArgs += $"\"{a}\"";
+                            }
+                            // Execute local if available
+                            SFlow.DoString($"if not ConsoleCommands then ConsoleSuccess(false) return end\nif not ConsoleCommands['.hasmember']('{cmd}') then ConsoleSuccess(false) return end\nConsoleSuccess(true)\nConsoleCommands.{cmd}({JArgs})");
+                            if (BubConsScriptSuccess) break; // If done, get outta here
+                                                             // Load the global commands if needed
+                            if (!SBubble.HaveState("DEBUG_CONSOLE_COMMANDS")) {
+                                WriteLine("Since this is the first time the Debug Console Commands are neeed", 255, 180, 0);
+                                WriteLine("The commands need to be loaded now, just a moment", 255, 180, 0);
+                                SBubble.NewState("DEBUG_CONSOLE_COMMANDS", "Script/System/Console.nil");
+                                WriteLine("Ok", 0, 255, 255);
+                            }
+                            // Execute gloal
+                            SBubble.State("DEBUG_CONSOLE_COMMANDS").DoString($"if not ConsoleCommands then CSay('Hey buddy! No ConsoleCommands group exists!') ConsoleSuccess(false) return end\nif not ConsoleCommands['.hasmember']('{cmd}') then ConsoleSuccess(false) return end\nConsoleSuccess(true)\nConsoleCommands.{cmd}({JArgs})");
+                            if (BubConsScriptSuccess) break;// If done, get outta here
+                        }
+                        // Failure, or so it seems.
+                        WriteLine("?Not understood", 255, 0, 0);
+                    } catch ( Exception NietGoed) {
+                        WriteLine("?.NET error", 255, 0, 0);
+                        WriteLine($"  {NietGoed.Message}", 255, 255, 0);
+                    }
                     break;
             }
         }

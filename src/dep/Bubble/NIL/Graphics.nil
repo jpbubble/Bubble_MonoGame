@@ -81,6 +81,10 @@ class TImage
 	void Tile(int x,int y,int w,int h,frame)
 		Bubble_Graphics:Tile(self.bubbletag,x,y,w,h,frame or 0)
 	end
+	
+	void ITile(int x, int y, int w, int h, int ix, int iy, frame)
+		Bubble_Graphics:ITile(self.bubbletag,x,y,w,h,ix,iy,frame or 0)
+	end
 
 	static var Load(string file)
 		return new TImage("*LOAD",file)

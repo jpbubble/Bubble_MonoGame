@@ -24,12 +24,6 @@
 // Version: 19.07.14
 // EndLic
 
-
-
-
-
-
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,6 +98,11 @@ namespace Bubble {
         public void Tile(string tag,int x,int y, int width,int height,int frame) {
             if (!Images.ContainsKey(tag)) SBubble.MyError("Bubble Graphics Error", $"There is no image tagged'{tag}'", SBubble.TraceLua(FlowManager.CurrentFlow));
             TQMG.Tile(Images[tag], x, y, 0, 0, width, height, frame);
+        }
+
+        public void ITile(string tag, int x, int y, int width, int height, int ix,int iy, int frame) {
+            if (!Images.ContainsKey(tag)) SBubble.MyError("Bubble Graphics Error", $"There is no image tagged'{tag}'", SBubble.TraceLua(FlowManager.CurrentFlow));
+            TQMG.Tile(Images[tag], ix, iy, x, y, width, height, frame);
         }
 
         public void Color(byte r,byte g, byte b) {

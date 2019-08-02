@@ -62,12 +62,18 @@ namespace Bubble {
                 Bubble_Console_Console:GoConsole()
             end
 
+            // It's USELESS to use this in your script, as this will either be ignored or lead to conflicts
+            // The Console Command manager needs this!
+            global void ConsoleSuccess(bool succ)
+                   Bubble_Console_Console.CommandSuccess = succ
+            end
+
 
             ", "Console initizer");
 
         }
 
-
+        public bool CommandSuccess { get => BubConsole.BubConsScriptSuccess; set { BubConsole.BubConsScriptSuccess = value; } }
         public void WriteLine(string msg, byte r, byte g, byte b) => BubConsole.WriteLine(msg, r, g, b);
         public void CSay(string msg) => BubConsole.CSay(msg);
         public void SetCSayColor(byte r, byte g, byte b) {

@@ -28,6 +28,8 @@ function StateExists(state)
 	return ret == 1
 end
 
+function CurrentFlow() return Bubble_Flow.CurrentFlow end
+
 function Bye()
 	Bubble_Flow:Bye()
 end
