@@ -133,6 +133,14 @@ global void SetColor(int r, int g, int b)
 	Bubble_Graphics:Color(r,g,b);
 end
 
+global var GetColor()
+	string script
+	delegate func
+	script = Bubble_Graphics:GetColor()
+	func = assert(NIL.LuaLoadString(script))
+	return func()
+end
+
 global int ScreenWidth 
 global int ScreenHeight 
 ScreenWidth  = Bubble_Graphics.ScrWidth;

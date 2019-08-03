@@ -110,6 +110,11 @@ namespace Bubble {
             TQMG.Color(r, g, b);
         }
 
+        public string GetColor() {
+            var c = TQMG.GetColor();
+            return $"return {c.R}, {c.G}, {c.B}";
+        }
+
         public byte Alpha {
             set => TQMG.SetAlpha(value);
             get => TQMG.GetAlpha();
