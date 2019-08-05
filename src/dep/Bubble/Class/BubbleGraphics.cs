@@ -56,15 +56,20 @@ namespace Bubble {
         }
 
         public string Load(string file, string assign = "") {
-            var tag = assign;
-            var at = 0;
-            if (tag == "") do { at++; tag = $"IMAGE:{at}"; } while (Images.ContainsKey(tag));
-            if (qstr.Suffixed(file.ToLower(), ".jpbf"))
-                Images[tag] = TQMG.GetBundle(file);
-            else
-                Images[tag] = TQMG.GetImage(file);
-            if (Images[tag] == null) throw new Exception($"Filed loading {file} at {tag}\n{UseJCR6.JCR6.JERROR}");
-            return tag;
+            try {
+                var tag = assign;
+                var at = 0;
+                if (tag == "") do { at++; tag = $"IMAGE:{at}"; } while (Images.ContainsKey(tag));
+                if (qstr.Suffixed(file.ToLower(), ".jpbf"))
+                    Images[tag] = TQMG.GetBundle(file);
+                else
+                    Images[tag] = TQMG.GetImage(file);
+                if (Images[tag] == null) throw new Exception($"Filed loading {file} at {tag}\n{UseJCR6.JCR6.JERROR}");
+                return tag;
+            } catch (Exception Catastrophe) {
+                SBubble.MyError($"Bubble.Graphics.Images.Load(\"{file}\",\"{assign}\")", Catastrophe.Message, SBubble.TraceLua(vm));
+                return "Il ya une catastrophe";
+            }
         }
 
         public int ScrWidth => TQMG.ScrWidth;
