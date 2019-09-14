@@ -18,6 +18,14 @@ function KillState(state) Bubble_Flow:KillState(state) end
 function LuaDoString(state,script,chunk) Bubble_Flow:DoStateLua(state,script,chunk or "LUA:DOSTATE") end
 function NILDoString(state,script,chunk) Bubble_Flow:DoStateNIL(state,script,chunk or "NIL:DOSTATE") end
 
+-- Please note, this should ONLY be used for function calls
+function LuaGetInt   (state,call,chunk) return Bubble_Flow:GetIntLua   (state,call, chunk or "LUA.GETINT")    end
+function LuaGetString(state,call,chunk) return Bubble_Flow:GetStringLua(state,call, chunk or "LUA.GETSTRING") end
+function LuaGetBool  (state,call,chunk) return Bubble_Flow:GetBoolLua  (state,call, chunk or "LUA.GETBOOL")   end
+-- This way of working can only be done with numbers, strings and bools, and for numbers I chose to only do this with integers to prevent rouding conflicts.
+-- Tables, functions and userdata cannot be transferred this way, as they are pointer based and stuck to their respective states, trying to transfer them,
+-- is looking for trouble, actually.
+
 function KillFlow(flow) KillState("FLOW_"..flow) end
 
 function StateExists(state) 

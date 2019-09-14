@@ -79,7 +79,7 @@ class TImage
 	end
 
 	void Tile(int x,int y,int w,int h,frame)
-		Bubble_Graphics:Tile(self.bubbletag,x,y,w,h,frame or 0)
+		Bubble_Graphics:ITile(self.bubbletag,x,y,w,h,0,0,frame or 0)
 	end
 	
 	void ITile(int x, int y, int w, int h, int ix, int iy, frame)
@@ -123,6 +123,10 @@ end
 global var LoadIfNew(string file,string assign)
 	if not Bubble_Graphics:HasTag(assign) then return LoadImage(file,assign) end
 	return TImage.Obtain(assign)
+end
+
+global bool ImageLoaded(string tag)
+	return Bubble_Graphics:HasTag(tag)
 end
 
 global void FreeImage(string tag)
@@ -247,7 +251,8 @@ class TGraphText
 	
 end
 
-class TGraphColor
+//class TGraphColor
+group GraphColor
 	int _cR
 	int _cG
 	int _cB
@@ -279,9 +284,17 @@ class TGraphColor
 		return Bubble_Graphics.Alpha
 	end
 end
-global var GraphColor
-GraphColor=new TGraphColor()
+//global var GraphColor
+//GraphColor=new TGraphColor()
 
+
+global void SetAlpha(int value)
+	Bubble_Graphics.Alpha = value
+end
+
+global int GetAlpha()
+	return Bubble_Graphics.Alpha
+end
 
 
 global var LoadImageFont(string font,assign)
@@ -304,3 +317,22 @@ end
 
 CSay("Graphics module loaded")
 
+global void Viewport(x,y,w,h)
+	if not(x or y or w or h) 
+		//Bubble_Graphics:FullViewPort()
+		Bubble_Graphics:SetViewPort(0,0,Screen.Width,Screen.Height)
+		return
+	end
+	assert(type(x)=="number" and type(y)=="number" and type(w)=="number" and type(h)=="number","Invalid viewport input: "..tostring(x)..","..tostring(y)..","..tostring(w)..","..tostring(h))
+	Bubble_Graphics:SetViewPort(x,y,w,h)
+end
+
+global var GetViewport()
+	var f
+	string s
+	s = Bubble_Graphics:GetViewPort()	
+	#pure
+	f = assert((loadstring or load)(s))
+	#endpure
+	return f()
+end

@@ -108,12 +108,61 @@ namespace Bubble {
         }
 
         public void DoStateLua(string s, string script,string chunk="LUA:DOSTATE") {
-            SBubble.State(s).DoString(script, chunk);
+            try {
+                SBubble.State(s).DoString(script, chunk);
+            } catch (Exception Uitzondering) {
+                SBubble.MyError($"LuaDoString(\"{s}\",\"{script}\",\"{chunk}\"):", Uitzondering.Message, "");
+            }
         }
 
         public void DoStateNIL(string s, string script, string chunk = "NIL:DOSTATE") {
+            try { 
             SBubble.DoNIL(s, script, chunk);
+            } catch (Exception Uitzondering) {
+                SBubble.MyError($"NILDoString(\"{s}\",\"{script}\",\"{chunk}\"):", Uitzondering.Message, "");
+            }
         }
+
+        public int GetIntLua(string state,string call,string chunk = "LUA.GETINT") {
+            try {
+                var O = SBubble.State(state).DoString($"return {call}", chunk);
+                if (O.Length == 0) {
+                    SBubble.MyError("GetIntLuaError", "Nothing has been properly returned!", "");
+                    return 0;
+                } else {
+                    return Convert.ToInt32(O[0]);
+                }
+            } catch (Exception Klote) {
+                SBubble.MyError($"LuaGetInt(\"{state}\",\"{call}\",\"{chunk}\"):", Klote.Message, "");
+                return 0;
+            }
+        }
+
+        public string GetStringLua(string state, string call, string chunk = "LUA.GETSTRING") {
+            try {
+                var O = SBubble.State(state).DoString($"return {call}", chunk);
+                if (O==null || O.Length == 0) {
+                    SBubble.MyError("GetStringLuaError", "Nothing has been properly returned!", "");
+                    return "";
+                } else {
+                    return (string)O[0];
+                }
+            } catch ( Exception Kut) {
+                SBubble.MyError($"LuaGetString(\"{state}\",\"{call}\",\"{chunk}\"):", Kut.Message, "");
+                return "Kilo Utrecht Tango";
+                
+            }
+        }
+        public bool GetBoolLua(string state, string call, string chunk = "LUA.GETBOOL") {
+            var O = SBubble.State(state).DoString($"return {call}", chunk);
+            if (O.Length == 0) {
+                SBubble.MyError("GetBoolLuaError", "Nothing has been properly returned!", "");
+                return false;
+            } else {
+                return (bool)O[0];
+            }
+        }
+
 
         public void KillState(string s) {
             s = s.ToUpper();
@@ -179,11 +228,15 @@ namespace Bubble {
         }
 
         static public void Update(GameTime gt) {
-            Time = gt.ElapsedGameTime;
-            MS = Mouse.GetState();
-            KB = Keyboard.GetState();
-            TQMGKey.Start(FlowManager.KB);
-            if (HFC != null) HFC.Update(gt);
+            try {
+                Time = gt.ElapsedGameTime;
+                MS = Mouse.GetState();
+                KB = Keyboard.GetState();
+                TQMGKey.Start(FlowManager.KB);
+                if (HFC != null) HFC.Update(gt);
+            } catch (Exception Whatever) {
+                SBubble.MyError("Flow.Update():", Whatever.Message, "");
+            }
         }
 
         static public void StartInitFlow() {

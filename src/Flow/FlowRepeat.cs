@@ -42,7 +42,7 @@ namespace Bubble {
             try {
                 State.DoString($"(BUB_Update or {FlowManager.NOTHING})()", "Draw");
             } catch (Exception err) {
-                var trace = State.GetDebugTraceback();
+                var trace = SBubble.TraceLua(FlowManager.CurrentFlow); //trace = State.GetDebugTraceback();
 #if DEBUG
                 trace += $"\n\n{err.StackTrace}";
 #endif

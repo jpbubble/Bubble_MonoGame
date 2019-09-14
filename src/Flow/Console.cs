@@ -108,6 +108,7 @@ namespace Bubble {
             var s = new NLua.Lua();
             var v = (string)s.DoString("return _VERSION")[0];
             WriteLine($"Uses {v} by PUC-Rio",180,0,255);
+            WriteLine($"Data folder: {Bubble_Save.SWorkDir}",180,255,0);
             if (SBubble.JCR.Exists("Bubble/Background.png")) {
                 WriteLine("Loading: Bubble/Background.png", 255, 180, 0);
                 BackGround = TQMG.GetImage("Bubble/Console.png");

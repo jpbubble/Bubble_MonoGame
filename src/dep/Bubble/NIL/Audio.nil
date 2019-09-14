@@ -48,11 +48,11 @@ class TAudio
 	end
 	
 	var IPlay()
-		return TAudioInstance.NEW(self.buftag,false)
+		return new TAudioInstance(self.buftag,false)
 	end
 	
 	var Loop()
-		return TAudioInstance.NEW(self.buftag,true)
+		return new TAudioInstance(self.buftag,true)
 	end
 
 end

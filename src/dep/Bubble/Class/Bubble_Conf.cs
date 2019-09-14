@@ -34,7 +34,7 @@ namespace Bubble {
 
     class Bubble_Conf  {
 
-        string statename;
+        string statename="";
 
         private Bubble_Conf() { }
 

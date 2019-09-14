@@ -42,7 +42,7 @@ namespace Bubble {
             #accept Bubble_Console_Console
 
             global void CWriteLine(string msg,int r, int g, int b)
-                assert(r>=0 and r<=255 and g>=0 and g<=255 and b>=0 and b<=255,'CWriteLine color setting invalid!')
+                assert(r>=0 and r<=255 and g>=0 and g<=255 and b>=0 and b<=255,'CWriteLine color setting invalid! ('..r..','..g..','..b..')')
                 Bubble_Console_Console:WriteLine(msg,r,g,b)
             end
 

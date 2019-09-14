@@ -75,6 +75,13 @@ namespace Bubble {
 
         public int ScrWidth => TQMG.ScrWidth;
         public int ScrHeight => TQMG.ScrHeight;
+
+        public void SetViewPort(int x, int y, int w, int h) => TQMG.ViewPort(x, y, w, h);
+        public void FullViewPort() => TQMG.ViewPortFull();
+        public string GetViewPort() {
+            var vp = TQMG.GetViewPort;
+            return $"return {vp.X},{vp.Y},{vp.Width},{vp.Height}";
+        }
        
 
         public void HotCenter(string tag) => Images[tag].HotCenter();

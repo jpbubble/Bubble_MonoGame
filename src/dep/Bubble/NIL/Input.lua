@@ -28,9 +28,15 @@ Keyboard = {}
 
 
 local mouseheld = {}
+local mousesleeping = false
 
 local function showmouse()
-	local MousePointer = TImage.Obtain("MOUSEPOINTER")
+	local MousePointer 
+	if mousesleeping then
+	    MousePointer = TImage.Obtain("MOUSESLEEPPOINTER")
+	else
+		MousePointer = TImage.Obtain("MOUSEPOINTER")
+	end
 	if Mouse.MouseInside then
 		MousePointer.Draw(Mouse.X,Mouse.Y)
 	end
@@ -60,7 +66,11 @@ local MetaMouse = {
 		elseif key=="SHOW" then
 			return showmouse
 		elseif key=="POINTER" then
-			return MousePointer
+			return TImage.Obtain("MOUSEPOINTER")
+		elseif key=="SLEEPPOINTER" then
+			return TImage.Obtain("MOUSESLEEPPOINTER")
+		elseif key=="SLEEP" or key=="SLEEPING" then
+			return mousesleeping
 		else
 			BubbleCrash("Mouse."..k.." does not exist!")
 		end
@@ -72,6 +82,12 @@ local MetaMouse = {
 			LoadImage(v,"MOUSEPOINTER");
 			CSay(("Mouse pointer image changed to '%s'!"):format(v))
 			--if not MousePointer then CSay("No mouse pointer is now there, though, so Mouse.Show() will be ignored!") end
+		elseif key=="SLEEPPOINTER" then 
+			LoadImage(v,"MOUSESLEEPPOINTER");
+			CSay(("Mouse sleep pointer image changed to '%s'!"):format(v))
+			--if not MousePointer then CSay("No mouse pointer is now there, though, so Mouse.Show() will be ignored!") end
+		elseif key=="SLEEP" or key=="SLEEPING" then		    
+			mousesleeping=(v~=nil) and (v~=false) and (v~=0) and (v~="")
 		else
 			BubbleCrash("Mouse."..k.." is either read-only or non-existent!")
 		end
