@@ -30,9 +30,14 @@ class TAudio
 	private string buftag
 	
 	void CONSTRUCTOR(string file,buftag)
-		self.buftag = Bubble_Audio:Load(file,buftag or "")
-		self.autodel = buftag==nil;
-		print("NIL: "..file.." stored in "..self.buftag)
+		if file!="*GET*"
+			self.buftag = Bubble_Audio:Load(file,buftag or "")			
+			self.autodel = buftag==nil;
+			print("NIL: "..file.." stored in "..self.buftag)
+		else
+			assert(type(buftag)=="string","Want audio tag")
+			self.buftag=buftag
+		end
 	end
 	
 	void DESTRUCTOR()
@@ -58,10 +63,16 @@ class TAudio
 end
 
 global var LoadAudio(string file,buftag)
-	return TAudio.NEW(file,buftag)
+	return new TAudio(file,buftag)
 end
 global var LoadSound
 LoadSound=LoadAudio
+
+global var GetAudio(string buftag)
+	var ret
+	ret = new TAudio("*GET*",buftag)
+	return ret
+end
 
 global void FreeAudio(string buffer)
 	Bubble_Audio:Free(buffer)

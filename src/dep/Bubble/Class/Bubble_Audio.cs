@@ -121,8 +121,12 @@ namespace Bubble {
         }
 
         public void StopInstance(string buf) {
-            if (!InstanceMap.ContainsKey(buf)) throw new Exception($"No audio instance tagged {buf} available");
-            InstanceMap[buf].Stop();
+            try {
+                if (!InstanceMap.ContainsKey(buf)) throw new Exception($"No audio instance tagged {buf} available");
+                InstanceMap[buf].Stop();
+            } catch (Exception Error) {
+                SBubble.MyError($"Error on audio instance {buf}", Error.Message, "");
+            }
         }
 
         public void PauseInstance(string buf) {

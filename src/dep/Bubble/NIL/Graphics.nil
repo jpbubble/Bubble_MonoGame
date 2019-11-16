@@ -7,7 +7,6 @@
 // In other words, you do NOT have to make the programs you make in Bubble_Graphics 
 // to be in the GPL.
 
-
 // The class in which most important stuff happens!
 
 // Keep the API out of the regular script! Only these functions and classes may access it :P
@@ -50,6 +49,10 @@ class TImage
 		return self.bubbletag
 	end
 	
+	get int Frames
+		return Bubble_Graphics:Frames(self.bubbletag)
+	end
+	
 	get bool AutoRelease
 		return self.autorelease
 	end
@@ -76,6 +79,10 @@ class TImage
 	
 	void Draw(int x,int y,frame)
 	     Bubble_Graphics:Draw(self.bubbletag,x,y,frame or 0)
+	end
+	
+	void XDraw(int x, int y, frame)
+		Bubble_Graphics:XDraw(self.bubbletag,x,y,frame or 0)
 	end
 
 	void Tile(int x,int y,int w,int h,frame)
@@ -335,4 +342,36 @@ global var GetViewport()
 	f = assert((loadstring or load)(s))
 	#endpure
 	return f()
+end
+
+
+group Scale
+
+	void Set(int x,int y)
+		self.X = x
+		self.Y = y
+	end
+	
+	get int X
+		return Bubble_Graphics.ScaleX
+	end
+	
+	get int Y
+		return Bubble_Graphics.ScaleY
+	end
+	
+	set int X
+		Bubble_Graphics.ScaleX = value
+	end
+	
+	set int Y
+		Bubble_Graphics.ScaleY = value
+	end
+	
+end
+
+global void SetScale(int x,y)
+	assert(y==nil or type(y)=="number",string.format("SetScale(%d,%s): When y is set it must be a number not an %s",x,tostring(y),type(y)))
+	Scale.X = x
+	Scale.Y = y or x
 end

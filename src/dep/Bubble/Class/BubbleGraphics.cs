@@ -68,7 +68,11 @@ namespace Bubble {
                 if (Images[tag] == null) throw new Exception($"Filed loading {file} at {tag}\n{UseJCR6.JCR6.JERROR}");
                 return tag;
             } catch (Exception Catastrophe) {
-                SBubble.MyError($"Bubble.Graphics.Images.Load(\"{file}\",\"{assign}\")", Catastrophe.Message, SBubble.TraceLua(vm));
+#if DEBUG
+                SBubble.MyError($"Bubble.Graphics.Images.Load(\"{file}\",\"{assign}\")", Catastrophe.Message, $"{SBubble.TraceLua(vm)}\n\n.NET Traceback:\n{Catastrophe.StackTrace}");
+#else
+                SBubble.MyError($"Bubble.Graphics.Images.Load(\"{file}\",\"{assign}\")", Catastrophe.Message, $"{SBubble.TraceLua(vm)}");
+#endif
                 return "Il ya une catastrophe";
             }
         }
@@ -82,7 +86,8 @@ namespace Bubble {
             var vp = TQMG.GetViewPort;
             return $"return {vp.X},{vp.Y},{vp.Width},{vp.Height}";
         }
-       
+
+        public int Frames(string tag) => Images[tag].Frames;
 
         public void HotCenter(string tag) => Images[tag].HotCenter();
         public void HotTopCenter(string tag) => Images[tag].HotTopCenter();
@@ -108,6 +113,14 @@ namespace Bubble {
             if (!Images.ContainsKey(tag)) SBubble.MyError("Bubble Graphics Error", $"There is no image tagged'{tag}'", SBubble.TraceLua(FlowManager.CurrentFlow));
             Images[tag].Draw(x, y, frame);
         }
+
+        public void XDraw(string tag,int x, int y, int frame) {
+            if (!Images.ContainsKey(tag)) SBubble.MyError("Bubble Graphics Error", $"There is no image tagged'{tag}'", SBubble.TraceLua(FlowManager.CurrentFlow));
+            Images[tag].XDraw(x, y, frame);
+        }
+
+        public int ScaleX { get => TQMG.ScaleX; set { TQMG.ScaleX = value; } }
+        public int ScaleY { get => TQMG.ScaleY; set { TQMG.ScaleY = value; } }
 
         public void Tile(string tag,int x,int y, int width,int height,int frame) {
             if (!Images.ContainsKey(tag)) SBubble.MyError("Bubble Graphics Error", $"There is no image tagged'{tag}'", SBubble.TraceLua(FlowManager.CurrentFlow));
