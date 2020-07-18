@@ -25,6 +25,7 @@
 // EndLic
 
 
+
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -58,6 +59,7 @@ namespace Bubble {
         static string TypingCommand = "";
         static HardFlowClass returnto = null;
         static public bool BubConsScriptSuccess = false;
+        static HardFlowClass KthuraBlockMapFlow=null;
         int LinesOnScreen => TQMG.ScrHeight / 22;
         int StartY {
             get {
@@ -153,6 +155,7 @@ namespace Bubble {
             string cmd = chopped[0].ToUpper();
             string[] arg = new string[0];
             if (chopped.Length > 1) arg = chopped.Skip(1).Take(chopped.Length - 1).ToArray();
+            
             switch (cmd) {
                 case "FUCK":
                 case "PISS":

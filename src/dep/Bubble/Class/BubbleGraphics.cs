@@ -77,6 +77,46 @@ namespace Bubble {
             }
         }
 
+        public string GrabScreen(string assign = "") {
+            try {
+                var tag = assign;
+                var at = 0;
+                if (tag == "") do { at++; tag = $"IMAGE:{at}"; } while (Images.ContainsKey(tag));
+                Images[tag] = TQMG.GrabImage();
+                if (Images[tag] == null) throw new Exception("Grabbed image == null!");
+                return tag;
+            } catch (Exception Catastrophe) {
+#if DEBUG
+                SBubble.MyError($"Bubble.Graphics.Images.Grab(\"{assign}\")", Catastrophe.Message, $"{SBubble.TraceLua(vm)}\n\n.NET Traceback:\n{Catastrophe.StackTrace}");
+#else
+                SBubble.MyError($"Bubble.Graphics.Images.Grab(\"{assign}\")", Catastrophe.Message, $"{SBubble.TraceLua(vm)}");
+#endif
+                return "Il ya une catastrophe";
+            }
+        }
+
+        public string GrabPart(int x,int y, int w, int h, string assign = "") {
+            try {
+                var tag = assign;
+                var at = 0;
+                if (tag == "") do { at++; tag = $"IMAGE:{at}"; } while (Images.ContainsKey(tag));
+                Images[tag] = TQMG.GrabImage(x,y,w,h);
+                return tag;
+            } catch (Exception Catastrophe) {
+#if DEBUG
+                SBubble.MyError($"Bubble.Graphics.Images.Grab(\"{assign}\",{x},{y},{w},{h})", Catastrophe.Message, $"{SBubble.TraceLua(vm)}\n\n.NET Traceback:\n{Catastrophe.StackTrace}");
+#else
+                SBubble.MyError($"Bubble.Graphics.Images.Grab(\"{assign}\",{x},{y},{w},{h})", Catastrophe.Message, $"{SBubble.TraceLua(vm)}");
+#endif
+                return "Il ya une catastrophe";
+            }
+        }
+
+        public void Line(int x1, int y1, int x2, int y2) => TQMG.Line(x1, y1, x2, y2);
+        public void Circle(int x, int y, double radius, double steps) => TQMG.Circle(x, y, radius, steps);
+            
+        
+
         public int ScrWidth => TQMG.ScrWidth;
         public int ScrHeight => TQMG.ScrHeight;
 
@@ -92,6 +132,7 @@ namespace Bubble {
         public void HotCenter(string tag) => Images[tag].HotCenter();
         public void HotTopCenter(string tag) => Images[tag].HotTopCenter();
         public void HotBottomCenter(string tag) => Images[tag].HotBottomCenter();
+        public void Hot(string tag, int x, int y) => Images[tag].Hot(x, y);
         public int Height(string tag) {
             //BubConsole.CSay($"Trying to get: {tag}");
             try {
@@ -111,16 +152,35 @@ namespace Bubble {
 
         public void Draw(string tag,int x, int y, int frame) {
             if (!Images.ContainsKey(tag)) SBubble.MyError("Bubble Graphics Error", $"There is no image tagged'{tag}'", SBubble.TraceLua(FlowManager.CurrentFlow));
-            Images[tag].Draw(x, y, frame);
+            try {
+                Images[tag].Draw(x, y, frame);
+            } catch (Exception e) {
+                SBubble.MyError($".NET: Draw(\"{tag}\",{x},{y},{frame}):", e.Message, $"FLOW:\n{SBubble.TraceLua(FlowManager.CurrentFlow)}");
+            }
         }
 
         public void XDraw(string tag,int x, int y, int frame) {
-            if (!Images.ContainsKey(tag)) SBubble.MyError("Bubble Graphics Error", $"There is no image tagged'{tag}'", SBubble.TraceLua(FlowManager.CurrentFlow));
-            Images[tag].XDraw(x, y, frame);
+            try {
+                if (!Images.ContainsKey(tag)) SBubble.MyError("Bubble Graphics Error", $"There is no image tagged'{tag}'", SBubble.TraceLua(FlowManager.CurrentFlow));
+                Images[tag].XDraw(x, y, frame);
+            } catch (Exception KakkieDeKakkerlak) {
+                SBubble.MyError($"XDraw(\"{tag}\", {x}, {y}, {frame}):", KakkieDeKakkerlak.Message, SBubble.TraceLua(FlowManager.CurrentFlow));
+            }
+        }
+
+        public void StretchDraw(string tag,int x, int y, int w, int h, int frame) {
+            try {
+                if (!Images.ContainsKey(tag)) SBubble.MyError("Bubble Graphics Error", $"There is no image tagged'{tag}'", SBubble.TraceLua(FlowManager.CurrentFlow));
+                Images[tag].StretchDraw(x, y, w,h,frame);
+            } catch (Exception KakkieDeKakkerlak) {
+                SBubble.MyError($"StretchDraw(\"{tag}\", {x}, {y}, {frame}):", KakkieDeKakkerlak.Message, SBubble.TraceLua(FlowManager.CurrentFlow));
+            }
         }
 
         public int ScaleX { get => TQMG.ScaleX; set { TQMG.ScaleX = value; } }
         public int ScaleY { get => TQMG.ScaleY; set { TQMG.ScaleY = value; } }
+        public int RotateDegrees { set => TQMG.RotateDEG(value); }
+        public float RotateRadian { set => TQMG.RotateRAD(value); }
 
         public void Tile(string tag,int x,int y, int width,int height,int frame) {
             if (!Images.ContainsKey(tag)) SBubble.MyError("Bubble Graphics Error", $"There is no image tagged'{tag}'", SBubble.TraceLua(FlowManager.CurrentFlow));
@@ -176,6 +236,7 @@ namespace Bubble {
             }
             return tag;
         }
+
 
         public void FreeFont(string tag) {
             if (Fonts.ContainsKey(tag)) Fonts.Remove(tag);

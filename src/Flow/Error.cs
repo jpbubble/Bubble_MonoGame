@@ -66,6 +66,7 @@ namespace Bubble {
             int DY = 0;
             if (Death.Height < TQMG.ScrHeight) DY = TQMG.ScrHeight - Death.Height;
             TQMG.Color(0, 18, 25);
+            TQMG.SetAlpha(255);
             TQMG.DrawRectangle(0, 0, TQMG.ScrWidth, TQMG.ScrHeight);
             TQMG.Color(0, 36, 50);
             Death.Draw(0, DY);

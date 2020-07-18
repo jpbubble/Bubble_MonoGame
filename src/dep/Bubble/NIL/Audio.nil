@@ -1,12 +1,21 @@
 class TAudioInstance
-	private string buftag
+	readonly string buftag
+	readonly string from
+	bool AutoFree = true
 	
 	void CONSTRUCTOR(string audio,bool loop)
 		self.buftag = Bubble_Audio:IPlay(audio,loop)
+		print("Instance created for "..audio,"Loop: "..tostring(loop),"Instance tag: "..self.buftag)
+		self.from = audio
 	end
 	
 	void DESTRUCTOR()
-		Bubble_Audio:FreeInstance(self.buftag)
+		if self.AutoFree
+			Bubble_Audio:FreeInstance(self.buftag)
+			print("Instance destroyed for "..self.buftag)
+		else
+			print("Instance for "..self.buftag.." already destroyed, or otherwise blocked for destruction")
+		end
 	end
 	
 	void Stop()
@@ -19,6 +28,12 @@ class TAudioInstance
 	
 	void Resume()
 		Bubble_Audio:ResumeInstance(self.buftag)
+	end
+	
+	void Free()
+		print("Forcing to destroy instance: "..self.buftag)
+		Bubble_Audio:FreeInstance(self.buftag)
+		self.AutoFree = false
 	end
 	
 end
@@ -44,9 +59,15 @@ class TAudio
 		if self.autodel 
 			Bubble_Audio:Free(self.buftag) 
 			if self.dbg then print("Audio buffer "..self.buftag.." released") end
+		elseif self.dbg 
+			print("Audio NIL object release, however I had no permission to remove "..self.buftag.." from the memory")
 		end
 	end
 		
+	void Free()
+		Bubble_Audio:Free(self.buftag) self.autodel=false
+		if self.dbg then print("Audio buffer "..self.buftag.." forcefully released") end
+	end	
 	
 	void Play()
 		Bubble_Audio:Play(self.buftag)
@@ -59,7 +80,13 @@ class TAudio
 	var Loop()
 		return new TAudioInstance(self.buftag,true)
 	end
+	
 
+end
+
+
+global string LoadedAdioBuffers()
+	return Bubble_Audio:LoadedBuffers()
 end
 
 global var LoadAudio(string file,buftag)
@@ -78,3 +105,7 @@ global void FreeAudio(string buffer)
 	Bubble_Audio:Free(buffer)
 end
 
+global var LoadNewAudio(string file, string buftag)
+	Bubble_Audio:LoadIfNew(file,buftag)
+	return GetAudio(buftag)
+end

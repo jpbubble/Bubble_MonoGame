@@ -26,7 +26,7 @@ class TImage
     
     
 	void CONSTRUCTOR(string how, string what)
-		print("CONSTRUCTOR")
+		// print("CONSTRUCTOR")
 		switch how
 			case "*OBTAIN"
 				self.bubbletag=what
@@ -37,7 +37,7 @@ class TImage
 			default
 				error("Unknown image creation instruction")
 		end
-		print("END CONS")
+		// print("END CONS")
 	end
 	
 	void DESTRUCTOR()
@@ -65,6 +65,14 @@ class TImage
 		return Bubble_Graphics:Height(self.bubbletag)
 	end
 	
+	get int W
+		return self.Width
+	end
+	
+	get int H
+		return self.Height
+	end
+	
 	void HotCenter()
 		Bubble_Graphics:HotCenter(self.bubbletag)
 	end
@@ -77,6 +85,10 @@ class TImage
 		Bubble_Graphics:HotBottomCenter(self.bubbletag)
 	end
 	
+	void Hot(int x, int y)
+		Bubble_Graphics:Hot(self.bubbletag,x,y)
+	end
+	
 	void Draw(int x,int y,frame)
 	     Bubble_Graphics:Draw(self.bubbletag,x,y,frame or 0)
 	end
@@ -84,7 +96,11 @@ class TImage
 	void XDraw(int x, int y, frame)
 		Bubble_Graphics:XDraw(self.bubbletag,x,y,frame or 0)
 	end
-
+	
+	void StretchDraw(int x, int y, int w, int h, frame)
+		Bubble_Graphics:StretchDraw(self.bubbletag,x,y,w,h,frame or 0)
+	end
+	
 	void Tile(int x,int y,int w,int h,frame)
 		Bubble_Graphics:ITile(self.bubbletag,x,y,w,h,0,0,frame or 0)
 	end
@@ -111,6 +127,15 @@ class TScreen
 	get int Height
 		return Bubble_Graphics.ScrHeight
 	end
+	
+	get int W
+		return self.Width
+	end
+	
+	get int H
+		return self.Height
+	end
+	
 end
 global var Screen 
 Screen = new TScreen
@@ -175,7 +200,7 @@ class TImageFont
 	end
 
 	void CONSTRUCTOR(string how, string what)
-		print("CONSTRUCTOR")
+		// print("CONSTRUCTOR")
 		switch how
 			case "*OBTAIN"
 				self.bubbletag=what
@@ -186,7 +211,7 @@ class TImageFont
 			default
 				error("Unknown image creation instruction")
 		end
-		print("END CONS")
+		// print("END CONS")
 	end
 	
 	void DESTRUCTOR()
@@ -207,7 +232,7 @@ class TImageFont
 		t = self.Text(txt)
 		t.Draw(x,y,align or TEXT_ALIGN_LEFT)
 	end
-
+	
 	void DrawText(string txt,int x, int y, align)
 		self.Draw(txt,x,y,align)
 	end
@@ -243,7 +268,7 @@ class TGraphText
 	
 	void Draw(int x, int y, align)
 		align=align or TEXT_ALIGN_LEFT
-		assert(align==TEXT_ALIGN_LEFT or align==TEXT_ALIGN_RIGHT or align==TEXT_ALIGN_CENTER,"Invalid text alignment!")
+		assert(align==TEXT_ALIGN_LEFT or align==TEXT_ALIGN_RIGHT or align==TEXT_ALIGN_CENTER,"Invalid text alignment! ("..tostring(align)..")")
 		Bubble_Graphics:TextDraw(self.bubbletag,x,y,align)
 	end
 
@@ -370,8 +395,71 @@ group Scale
 	
 end
 
+
+string RotUnit = "DEG"
+quickmeta group Rotate
+	
+	newindex
+		string k
+		k = key:upper()
+		switch k
+			case "DEG"
+				Bubble_Graphics.RotateDegrees = value
+			case "RAD"
+				Bubble_Graphics.RotateRadians = value
+			case "UNIT"
+				assert(value:upper()=="DEG" or value:upper()=="RAD","Unknown rotate unit ("..tostring(value)..")")
+				RotUnit = value:upper()
+			default
+				error("Unknown Rotation Index")
+		end
+	end
+	
+	index
+		error("Rotate indexes are write only!")
+	end
+	
+	call
+		int i
+		i = infinity
+		Rotate[RotUnit] = i
+	end
+	
+end
+
 global void SetScale(int x,y)
 	assert(y==nil or type(y)=="number",string.format("SetScale(%d,%s): When y is set it must be a number not an %s",x,tostring(y),type(y)))
 	Scale.X = x
 	Scale.Y = y or x
+end
+
+global var Grab(infinity)
+	table arg
+	string tag
+	arg = {infinity}
+	switch #arg
+		case 0
+			tag = Bubble_Graphics:GrabScreen()
+		case 1
+			tag = Bubble_Graphics:GrabScreen(tostring(arg[1]))
+		case 4 5
+			for i,v in ipairs(arg)
+				assert((type(v)=="number" and i<5) or (type(v)=="string" and i==5),string.format("Number expected paramter %d, but got %s (%s)",i,type(v),tostring(v)))
+			end
+			tag = Bubble_Graphics:GrabPart(infinity)
+		
+		default
+			error("Grab only takes 4 paramters and I got "..#arg)
+	end
+	return TImage.Obtain(tag)
+end
+
+global void DrawLine(int x1, int y1, int x2, int y2)
+	Bubble_Graphics:Line(x1,y1,x2,y2)
+end
+
+global void DrawCircle(int x, int y, int radius, steps)
+	steps = steps or 0.5
+	assert(type(steps)=="number","If set 'steps' must be a number. Got: "..type(steps))
+	Bubble_Graphics:Circle(x,y,radius,steps)
 end

@@ -223,6 +223,8 @@ namespace Bubble {
                 HFC = null;
         }
 
+        static public HardFlowClass GetHardFlow => HFC;
+
         static public void Draw(GameTime gt) {
             if (HFC != null) HFC.Draw(gt);
         }

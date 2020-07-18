@@ -43,6 +43,7 @@ namespace Bubble {
     class Bubble_Audio {
         static Dictionary<string, SoundEffect> AudioMap = new Dictionary<string, SoundEffect>();
         static Dictionary<string, SoundEffectInstance> InstanceMap = new Dictionary<string, SoundEffectInstance>();
+        static Dictionary<string, string> InstanceAudioMap => new Dictionary<string, string>();
 
         public static void Init(string vm) { new Bubble_Audio(vm); }
         public Bubble_Audio(string s) {
@@ -78,6 +79,12 @@ namespace Bubble {
             return tag;
         }
 
+        public string LoadIfNew(string file, string tag) {
+            if (!AudioMap.ContainsKey(tag))
+                return Load(file, tag);
+            return tag;
+        }
+
         public void Play(string buf) {
             try {
                 //Debug.Write($"Playing {buf}");
@@ -90,6 +97,30 @@ namespace Bubble {
             //Debug.WriteLine("Done");
         }
 
+        public string LoadedBuffers() {
+            var r = new StringBuilder("Loaded Audi0 buffers:\n");
+            try {
+                foreach (string k in AudioMap.Keys) {
+                    r.Append($"{k} => {AudioMap[k].Duration}\n");
+                }
+                r.Append("Current Audio Instances\n");
+                foreach (string k in InstanceMap.Keys) {
+                    if (InstanceAudioMap.ContainsKey(k)) {
+                        r.Append($"{k} => {InstanceAudioMap[k]} => {InstanceMap[k].State}\n");
+                    } else {
+                        r.Append($"{k} => *Unknown Audio Buffer* => {InstanceMap[k].State}\n");
+                    }
+                }
+                r.Append("InstanceAudioMap\n");
+                foreach (string k in InstanceAudioMap.Keys) {
+                    r.Append($"{k} => {InstanceAudioMap[k]}");
+                }
+            } catch (Exception fuck) {
+                r.Append($"\n\n\n.NET threw an exception:\n{fuck.Message}");
+            }
+            return $"{r}";
+        }
+
         public string IPlay(string buf, bool loop) {
             var tag = "";
             try {
@@ -100,6 +131,7 @@ namespace Bubble {
                     c++;
                     tag = $"INSTANCE{c.ToString("X10")}";
                 } while (InstanceMap.ContainsKey(tag));
+                InstanceAudioMap[tag] = buf;
                 InstanceMap[tag] = i;
                 i.IsLooped = loop;
                 i.Play();
@@ -111,10 +143,15 @@ namespace Bubble {
 
         public void FreeInstance(string buf) {
             try {
-                if (!InstanceMap.ContainsKey(buf)) return;
+                if (!InstanceMap.ContainsKey(buf)) {
+                    BubConsole.CSay($"No instance key \"{buf}\" so NOT releasing!"); // debug only!
+                    return;
+                }
                 var i = InstanceMap[buf];
                 i.Stop(); // I don't want any sound to linger until the C# garbage collector picks this up.
                 InstanceMap.Remove(buf);
+                InstanceAudioMap.Remove(buf);
+                BubConsole.CSay($"Releasing {buf}"); // debug only!
             } catch (Exception Error) {
                 SBubble.MyError($"Error on audio instance {buf}",Error.Message,"");
             }

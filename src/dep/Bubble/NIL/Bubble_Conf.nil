@@ -23,11 +23,11 @@ global void Notify(string message,caption,icon)
 	caption=caption or ""
 	icon=icon or ""
 	assert(type(caption)=="string","Caption must be string!")
-	assert(type(caption)=="icon","Icon must be string!")
+	assert(type(icon)=="string","Icon must be string!")
 	Bubble_Conf:Annoy(message,caption,icon)
 end
-delegate Alert
-delegate Annoy
+global delegate Alert
+global delegate Annoy
 Alert = Notify
 Annoy = Notify
 
